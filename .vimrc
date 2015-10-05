@@ -42,6 +42,8 @@ NeoBundle 'ervandew/supertab'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'https://github.com/neilagabriel/vim-geeknote'
+NeoBundle 'FredKSchott/CoVim'
+NeoBundle 'tpope/vim-unimpaired'
 
 call neobundle#end()
 
@@ -144,7 +146,6 @@ filetype indent on
 set list listchars=tab:\ \ ,trail:·
 
 set nowrap       "Don't wrap lines
-set linebreak    "Wrap lines at convenient points
 
 " ================ Folds ============================
 
@@ -182,6 +183,11 @@ set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 set nohlsearch      " Noh after search
 
+" =============== Key Bindings ======================
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
+
 " =============== Copy/Paste ========================
 
 vmap <Leader>y "+y
@@ -197,11 +203,24 @@ nnoremap ; :
 
 " =============== Spell Checking ====================
 nnoremap <Leader>sc :setlocal spell! spelllang=en_us<CR>
-nnoremap <Leader>sl ]s
-nnoremap <Leader>sh [s
-nnoremap <Leader>sj z=
-nnoremap <Leader>sa zg
+nnoremap <Leader>l ]s
+nnoremap <Leader>h [s
+nnoremap <Leader>j z=
+nnoremap <Leader>a zg
 
 " =============== Buffers ===========================
-nnoremap <C-l> :bnext<CR>
-nnoremap <C-h> :bprevious<CR>
+" nnoremap <C-l> :bnext<CR>
+" nnoremap <C-h> :bprevious<CR>
+
+" ================ Latex =============================
+
+au BufRead,BufNewFile *.txt,*.tex set nowrap wrap linebreak nolist spell textwidth=0 wrapmargin=0
+
+let g:tex_flavor='latex'
+
+" ================ taglist ==========================
+
+let Tlist_Compact_Format = 1
+let Tlist_GainFocus_On_ToggleOpen = 1
+let Tlist_Close_On_Select = 1
+nnoremap <C-l> :TlistToggle<CR>
