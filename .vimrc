@@ -95,6 +95,8 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+nnoremap <Leader>st :SyntasticToggle<CR>
+
 " ================ General Config ====================
 
 set number                      "Line numbers are good
