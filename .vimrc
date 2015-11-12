@@ -13,6 +13,10 @@ let mapleader="\<Space>"
 if 0 | endif
 
 if has('vim_starting')
+  if &compatible
+    set nocompatible               " Be iMproved
+  endif
+
   " Required:
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
@@ -44,8 +48,11 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'https://github.com/neilagabriel/vim-geeknote'
 NeoBundle 'FredKSchott/CoVim'
 NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'majutsushi/tagbar'
 
 call neobundle#end()
+
+NeoBundleCheck
 
 " Required:
 filetype plugin indent on
@@ -201,6 +208,23 @@ vmap <Leader>P "+P
 
 nnoremap ; :
 
+" =============== Navigation ========================
+nmap j gj
+nmap k gk
+
+" In command line
+:cnoremap <C-a>  <Home>
+:cnoremap <C-b>  <Left>
+:cnoremap <C-f>  <Right>
+:cnoremap <C-d>  <Delete>
+:cnoremap <M-b>  <S-Left>
+:cnoremap <M-f>  <S-Right>
+:cnoremap <M-d>  <S-right><Delete>
+:cnoremap <Esc>b <S-Left>
+:cnoremap <Esc>f <S-Right>
+:cnoremap <Esc>d <S-right><Delete>
+:cnoremap <C-g>  <C-c>
+
 " =============== Spell Checking ====================
 nnoremap <Leader>sc :setlocal spell! spelllang=en_us<CR>
 nnoremap <Leader>l ]s
@@ -209,18 +233,11 @@ nnoremap <Leader>j z=
 nnoremap <Leader>a zg
 
 " =============== Buffers ===========================
-" nnoremap <C-l> :bnext<CR>
-" nnoremap <C-h> :bprevious<CR>
+nmap <C-l> :bnext<CR>
+nmap <C-h> :bprevious<CR>
 
 " ================ Latex =============================
 
 au BufRead,BufNewFile *.txt,*.tex set nowrap wrap linebreak nolist spell textwidth=0 wrapmargin=0
 
 let g:tex_flavor='latex'
-
-" ================ taglist ==========================
-
-let Tlist_Compact_Format = 1
-let Tlist_GainFocus_On_ToggleOpen = 1
-let Tlist_Close_On_Select = 1
-nnoremap <C-l> :TlistToggle<CR>
