@@ -117,6 +117,7 @@ set hidden
 syntax on
 " ================ Color Scheme =====================
 
+set background=dark
 colorscheme solarized
 
 " ================ Turn Off Swap Files ==============
@@ -135,7 +136,6 @@ set undofile
 endif
 
 " ================ Indentation ======================
-
 set autoindent
 set smartindent
 set smarttab
@@ -157,13 +157,11 @@ set list listchars=tab:\ \ ,trail:·
 set nowrap       "Don't wrap lines
 
 " ================ Folds ============================
-
 set foldmethod=indent   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
 
 " ================ Completion =======================
-
 set wildmode=list:longest
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
@@ -179,7 +177,6 @@ set wildignore+=*.png,*.jpg,*.gif
 
 "
 " ================ Scrolling ========================
-
 set scrolloff=8         "Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
@@ -198,7 +195,6 @@ set nohlsearch      " Noh after search
 cmap w!! w !sudo tee > /dev/null %
 
 " =============== Copy/Paste ========================
-
 vmap <Leader>y "+y
 vmap <Leader>d "+d
 nmap <Leader>p "+p
@@ -207,7 +203,6 @@ vmap <Leader>p "+p
 vmap <Leader>P "+P
 
 " =============== Semi To Colon =====================
-
 nnoremap ; :
 
 " =============== Navigation ========================

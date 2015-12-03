@@ -11,11 +11,12 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
 Plug 'sheerun/vim-polyglot'
-Plug 'airblade/vim-rooter'
+"Plug 'airblade/vim-rooter'
 Plug 'Shougo/unite.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
+Plug 'kassio/neoterm'
 call plug#end()
 
 if has("persistent_undo")
@@ -23,18 +24,21 @@ if has("persistent_undo")
     set undofile
 endif
 
-" Toggle neomake on write
-let g:neomakeActiveMode = 1
-function! NeomakeOnWrite(...)
-	if g:neomakeActiveMode == 1
-		Neomake
+" Toggle neomake open list
+autocmd! BufWritePost * Neomake
+let g:neomake_open_list = 0
+
+function! OpenNeomakeOutput(...)
+	if g:neomake_open_list == 0
+		:let g:neomake_open_list = 1
+		:w
+	else
+		:let g:neomake_open_list = 0
 	endif
 endfunction
 
-autocmd! BufWritePost * call NeomakeOnWrite()
-let g:neomake_open_list = 2
-
-nnoremap <Leader>t :let g:neomakeActiveMode = 1 - g:neomakeActiveMode<CR>
+nnoremap <Leader>t :call OpenNeomakeOutput()<CR>
+nnoremap <Leader>m :Neomake!<CR>
 
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -94,3 +98,15 @@ set scrolloff=3
 set nobackup
 set noswapfile
 set nowb
+
+
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+set smartindent
+set smarttab
+set expandtab
+
+set ignorecase      " Ignore case when searching...
+set smartcase       " ...unless we type a capital
+set nohlsearch      " Noh after search
