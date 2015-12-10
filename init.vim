@@ -258,14 +258,12 @@ nnoremap <C-l> <C-w>l
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 "}}}
 
-" Highlight term cursor differently"{{{
-"}}}
-
 " Link highlight groups to improve buftabline colors"{{{
 hi! link BufTabLineCurrent Identifier
 hi! link BufTabLineActive Comment
 hi! link BufTabLineHidden Comment
 hi! link BufTabLineFill Comment
+
 " ===== Fuzzy search contents directory
 function! s:ag_to_qf(line)
   let parts = split(a:line, ':')
