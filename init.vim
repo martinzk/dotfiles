@@ -4,17 +4,28 @@ let mapleader="\<Space>"
 call plug#begin()
 Plug 'benekastah/neomake'
 Plug 'altercation/vim-colors-solarized'
-Plug 'bling/vim-airline'
+Plug 'itchyny/lightline.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'ervandew/supertab'
-Plug 'Valloric/YouCompleteMe'
 Plug 'sheerun/vim-polyglot'
 Plug 'Shougo/unite.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'kassio/neoterm'
+
+" closing
+Plug 'cohama/lexima.vim'
+" commenting
+Plug 'tpope/vim-commentary'
+" CamelCase word motions
+Plug 'bkad/CamelCaseMotion'
+" Asynchronous completion
+Plug 'Shougo/deoplete.nvim'
+" Buffers instead of tabs
+Plug 'ap/vim-buftabline'
+
 call plug#end()
 
 if has("persistent_undo")
@@ -34,12 +45,7 @@ let g:neomake_open_list = 0
 
 nnoremap <Leader>nt :let g:neomake_open_list = 1<CR>:Neomake<CR>
 nnoremap <Leader>nm :let g:neomake_open_list = 1<CR>:Neomake!<CR>
-nnoremap <Leader>m  :T make<CR>
-
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+nnoremap <Leader>m :T make<CR>
 
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
@@ -61,6 +67,9 @@ nnoremap <Leader>bk <C-w>k:bd<CR>
 nnoremap <Leader>bh <C-w>h:bd<CR>
 nnoremap <Leader>bt :call neoterm#close()<CR>
 
+nnoremap <M-n> :bnext<CR>
+nnoremap <M-p> :bprevious<CR>
+
 " ====== Undotree
 nnoremap <Leader>u :UndotreeToggle<CR>
 
@@ -71,7 +80,9 @@ nnoremap <Leader>gps :T gps<CR>
 nnoremap <Leader>gb :T git blame %<CR>
 nnoremap <Leader>ga :T git add %<CR>
 nnoremap <Leader>gd :T git diff %<CR>
-nnoremap <Leader>gc :T git commit % -m "
+nnoremap <Leader>gc :T git add %<CR>:T git commit % -m "
+nnoremap <Leader>g. :T git add $(dirname %)<CR>:T git commit $(dirname %)<CR>
+nnoremap <Leader>gl :T gl %<CR>
 
 " General
 set visualbell                  "No sounds
@@ -97,12 +108,73 @@ nnoremap ; :
 " =============== Navigation ========================
 "nmap j gj
 "nmap k gk
+" When jump to next match also center screen
+noremap n nzz
+noremap N Nzz
+
+" Same when moving up and down
+noremap <C-d> <C-d>zz
+noremap <C-u> <C-u>zz
+
+" Remap H and L (top, bottom of screen to left and right end of line)
+nnoremap H ^
+nnoremap L $
+vnoremap H ^
+vnoremap L g_
+
+" More logical Y (defaul was alias for yy)
+nnoremap Y y$
+
+" Quick replay q macro
+nnoremap Q @q
+
+" Cancel terminal mode with ,escape
+tnoremap <Leader><ESC> <C-\><C-n>
+
+" Don't yank to default register when changing something
+nnoremap c "xc
+xnoremap c "xc
+
+" After block yank and paste, move cursor to the end of operated text
+" Also, don't copy over-pasted text in visual mode
+vnoremap y y`]
+vnoremap p "_dP`]
+nnoremap p p`]
+
+" Move visual block
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" Omnicomplete menu
+set completeopt-=preview                    " Don't show preview scratch buffers
+set wildignore=*.o,*.obj,*~
+set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
+set wildignore+=*.gem
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=*.png,*.jpg,*.gif
+
+" Insert mode cursor
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 
+
+" lexima latex rules
+call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': 'latex'})
+call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': 'latex'})
+call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': 'latex'})
+
+" CamelCaseMotion rules
+call camelcasemotion#CreateMotionMappings('<leader>')
+
+" Deoplete
+let g:deoplete#enable_at_startup = 1
 
 " Latex
 let g:tex_flavor='latex'
 
-set number " Can be toggled with unimpaired's 'con'
-" turn on relative numbers on everything but latex
+set number
+set hidden
 
 " Automatically scroll when I reach within 3 lines towards end of screen
 set sidescrolloff=3
@@ -161,3 +233,26 @@ command! -nargs=* Ag call fzf#run({
 \ 'down':    '50%'
 \ })
 " ===== Fuzzy search contents directory END
+
+let g:lightline = {
+      \ 'colorscheme': 'solarized',
+      \ 'tab': {
+      \   'active': [ 'tabnum', 'filename', 'modified' ],
+      \   'inactive': [ 'tabnum', 'filename', 'modified' ]
+      \ },
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste', 'capslock' ],
+      \             [ 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component': {
+      \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
+      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+      \   'capslock': '%{exists("*CapsLockStatusline")?CapsLockStatusline():""}'
+      \ },
+      \ 'component_visible_condition': {
+      \   'readonly': '(&filetype!="help"&& &readonly)',
+      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))'
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' }
+      \ }
