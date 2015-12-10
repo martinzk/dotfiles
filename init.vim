@@ -77,7 +77,6 @@ function! NeoFunc(...)
   silent :let g:neomake_open_list = 0
   :Neomake
 endfunction
-  
 
 " Toggle neomake open list
 autocmd! BufWritePost * call NeoFunc()
