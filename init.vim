@@ -81,7 +81,7 @@ nnoremap <Leader>gb :T git blame %<CR>
 nnoremap <Leader>ga :T git add %<CR>
 nnoremap <Leader>gd :T git diff %<CR>
 nnoremap <Leader>gc :T git add %<CR>:T git commit % -m "
-nnoremap <Leader>g. :T git add $(dirname %)<CR>:T git commit $(dirname %)<CR>
+nnoremap <Leader>g. :T git add $(dirname %)<CR>:T git commit $(dirname %) -m "
 nnoremap <Leader>gl :T gl %<CR>
 
 " General
