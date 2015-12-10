@@ -107,8 +107,8 @@ nnoremap <Leader>u :UndotreeToggle<CR>
 
 " ================ Git ===============================
 nnoremap <Leader>gs :Gstatus<CR>
-nnoremap <Leader>gpl :Gpull<CR>
-nnoremap <Leader>gps :Gpush<CR>
+nnoremap <Leader>gpl :T git pull<CR>
+nnoremap <Leader>gps :T git push<CR>
 nnoremap <Leader>gb :Gblame<CR>
 nnoremap <Leader>ga :Gwrite<CR>
 nnoremap <Leader>gd :Gdiff<CR>
