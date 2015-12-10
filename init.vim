@@ -71,6 +71,7 @@ nnoremap <Leader>gps :T gps<CR>
 nnoremap <Leader>gb :T git blame %<CR>
 nnoremap <Leader>ga :T git add %<CR>
 nnoremap <Leader>gd :T git diff %<CR>
+nnoremap <Leader>gc :T git commit % -m "
 
 " General
 set visualbell                  "No sounds
