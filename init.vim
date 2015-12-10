@@ -25,6 +25,32 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'Shougo/deoplete.nvim'
 " Buffers instead of tabs
 Plug 'ap/vim-buftabline'
+" Fugitive for git viewer
+Plug 'tpope/vim-fugitive'
+" Git viewer
+Plug 'gregsexton/gitv'
+" Git changes on lines
+Plug 'airblade/vim-gitgutter'
+" Unix commands
+Plug 'tpope/vim-eunuch'
+" Quickly jump with fFtT
+Plug 'unblevable/quick-scope'
+" Use cs"'
+Plug 'tpope/vim-surround'
+" Expand visual with + / _
+Plug 'terryma/vim-expand-region'
+" Close buffers/windows with same command
+Plug 'mhinz/vim-sayonara'
+" Autocorrect common spelling mistakes
+Plug 'chip/vim-fat-finger'
+" Man reading in vim
+Plug 'jez/vim-superman'
+" % match additions
+" Plug 'edsono/vim-matchit'
+" .
+Plug 'tpope/vim-repeat'
+" Ggrep and replace everything (search replace all files)
+Plug 'nelstrom/vim-qargs', { 'on': 'Qargs' } 
 
 call plug#end()
 
@@ -32,6 +58,20 @@ if has("persistent_undo")
     set undodir=~/.undodir/
     set undofile
 endif
+" Make sure Vim returns to the same line when you reopen a file.
+augroup line_return
+  au!
+  au BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \     execute 'normal! g`"zvzz' |
+        \ endif
+augroup END
+
+syntax on
+filetype plugin indent on
+set foldmethod=marker                       " Markers are used to specify folds.
+set foldlevel=1                             " Start folding automatically from level 1
+set fillchars="fold: " 
 
 function! NeoFunc(...)
   silent :let g:neomake_open_list = 0
@@ -59,14 +99,6 @@ nnoremap <Leader>fl :Lines<CR>
 nnoremap <Leader>fh :History<CR>
 nnoremap <Leader>fa :Ag<CR>
 
-" ======= quickly close buffers
-nnoremap <Leader>bd :bd<CR>
-nnoremap <Leader>bj <C-w>j:bd<CR>
-nnoremap <Leader>bl <C-w>l:bd<CR>
-nnoremap <Leader>bk <C-w>k:bd<CR>
-nnoremap <Leader>bh <C-w>h:bd<CR>
-nnoremap <Leader>bt :call neoterm#close()<CR>
-
 nnoremap <M-n> :bnext<CR>
 nnoremap <M-p> :bprevious<CR>
 
@@ -74,15 +106,15 @@ nnoremap <M-p> :bprevious<CR>
 nnoremap <Leader>u :UndotreeToggle<CR>
 
 " ================ Git ===============================
-nnoremap <Leader>gs :T gs<CR>
-nnoremap <Leader>gpl :T gpl<CR>
-nnoremap <Leader>gps :T gps<CR>
-nnoremap <Leader>gb :T git blame %<CR>
-nnoremap <Leader>ga :T git add %<CR>
-nnoremap <Leader>gd :T git diff %<CR>
-nnoremap <Leader>gc :T git add %<CR>:T git commit % -m "
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gpl :Gpull<CR>
+nnoremap <Leader>gps :Gpush<CR>
+nnoremap <Leader>gb :Gblame<CR>
+nnoremap <Leader>ga :Gwrite<CR>
+nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>gc :Gwrite<CR>:Gcommit -m "
 nnoremap <Leader>g. :T git add $(dirname %)<CR>:T git commit $(dirname %) -m "
-nnoremap <Leader>gl :T gl %<CR>
+nnoremap <Leader>gl :Gitv<CR>
 
 " General
 set visualbell                  "No sounds
@@ -90,9 +122,6 @@ set visualbell                  "No sounds
 " ================ Color Scheme =====================
 set background=dark
 colorscheme solarized
-
-" Allow saving of files as sudo when I forgot to start vim using sudo.
-cmap w!! w !sudo tee > /dev/null %
 
 " =============== Copy/Paste ========================
 vmap <Leader>y "+y
@@ -170,6 +199,29 @@ call camelcasemotion#CreateMotionMappings('<leader>')
 " Deoplete
 let g:deoplete#enable_at_startup = 1
 
+" quick-scope
+" Trigger a highlight in the appropriate direction when pressing these keys:
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+" vim-expand-region
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
+
+" Sayonara
+" Ask if it is last window
+let g:sayonara_confirm_quit = 1
+
+" ======= quickly close buffers
+nnoremap <Leader>bd :Sayonara<CR>
+nnoremap <Leader>bj <C-w>j:Sayonara<CR>
+nnoremap <Leader>bl <C-w>l:Sayonara<CR>
+nnoremap <Leader>bk <C-w>k:Sayonara<CR>
+nnoremap <Leader>bh <C-w>h:Sayonara<CR>
+
+" NeoTerm
+let g:neoterm_size=60
+let g:neoterm_position='vertical'
+
 " Latex
 let g:tex_flavor='latex'
 
@@ -196,6 +248,24 @@ set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 set nohlsearch      " Noh after search
 
+" Easier window switching
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Highlight VCS conflict markers"{{{
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+"}}}
+
+" Highlight term cursor differently"{{{
+"}}}
+
+" Link highlight groups to improve buftabline colors"{{{
+hi! link BufTabLineCurrent Identifier
+hi! link BufTabLineActive Comment
+hi! link BufTabLineHidden Comment
+hi! link BufTabLineFill Comment
 " ===== Fuzzy search contents directory
 function! s:ag_to_qf(line)
   let parts = split(a:line, ':')
