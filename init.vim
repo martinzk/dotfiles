@@ -110,7 +110,7 @@ nnoremap <Leader>gpl :T git pull<CR>
 nnoremap <Leader>gps :T git push<CR>
 nnoremap <Leader>gb :Gblame<CR>
 nnoremap <Leader>ga :Gwrite<CR>
-nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>gd :T git diff %<CR>
 nnoremap <Leader>gc :Gwrite<CR>:Gcommit -m "
 nnoremap <Leader>g. :T git add $(dirname %)<CR>:T git commit $(dirname %) -m "
 nnoremap <Leader>gl :Gitv<CR>
