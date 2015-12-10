@@ -22,21 +22,19 @@ if has("persistent_undo")
     set undofile
 endif
 
+function! NeoFunc(...)
+  silent :let g:neomake_open_list = 0
+  :Neomake
+endfunction
+  
+
 " Toggle neomake open list
-autocmd! BufWritePost * Neomake
+autocmd! BufWritePost * call NeoFunc()
 let g:neomake_open_list = 0
 
-function! OpenNeomakeOutput(...)
-	if g:neomake_open_list == 0
-		:let g:neomake_open_list = 1
-		:w
-	else
-		:let g:neomake_open_list = 0
-	endif
-endfunction
-
-nnoremap <Leader>t :call OpenNeomakeOutput()<CR>
-nnoremap <Leader>m :Neomake!<CR>:copen<CR>
+nnoremap <Leader>nt :let g:neomake_open_list = 1<CR>:Neomake<CR>
+nnoremap <Leader>nm :let g:neomake_open_list = 1<CR>:Neomake!<CR>
+nnoremap <Leader>m  :T make<CR>
 
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -61,6 +59,7 @@ nnoremap <Leader>bj <C-w>j:bd<CR>
 nnoremap <Leader>bl <C-w>l:bd<CR>
 nnoremap <Leader>bk <C-w>k:bd<CR>
 nnoremap <Leader>bh <C-w>h:bd<CR>
+nnoremap <Leader>bt :call neoterm#close()<CR>
 
 " ====== Undotree
 nnoremap <Leader>u :UndotreeToggle<CR>
@@ -69,6 +68,9 @@ nnoremap <Leader>u :UndotreeToggle<CR>
 nnoremap <Leader>gs :T gs<CR>
 nnoremap <Leader>gpl :T gpl<CR>
 nnoremap <Leader>gps :T gps<CR>
+nnoremap <Leader>gb :T git blame %<CR>
+nnoremap <Leader>ga :T git add %<CR>
+nnoremap <Leader>gd :T git diff %<CR>
 
 " General
 set visualbell                  "No sounds
@@ -92,8 +94,8 @@ vmap <Leader>P "+P
 nnoremap ; :
 
 " =============== Navigation ========================
-nmap j gj
-nmap k gk
+"nmap j gj
+"nmap k gk
 
 " Latex
 let g:tex_flavor='latex'
