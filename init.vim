@@ -17,17 +17,15 @@ Plug 'kassio/neoterm'
 
 " closing
 Plug 'cohama/lexima.vim'
-" commenting
-Plug 'tpope/vim-commentary'
-" CamelCase word motions
-Plug 'bkad/CamelCaseMotion'
+" commenting gcc (line) or gc{motion}
+Plug 'tomtom/tcomment_vim'
 " Asynchronous completion
 Plug 'Shougo/deoplete.nvim'
-" Buffers instead of tabs
+" Buffers on top
 Plug 'ap/vim-buftabline'
 " Fugitive for git viewer
 Plug 'tpope/vim-fugitive'
-" Git viewer
+" Git log viewer
 Plug 'gregsexton/gitv'
 " Git changes on lines
 Plug 'airblade/vim-gitgutter'
@@ -37,7 +35,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'unblevable/quick-scope'
 " Use cs"'
 Plug 'tpope/vim-surround'
-" Expand visual with + / _
+" Expand visual with v
 Plug 'terryma/vim-expand-region'
 " Close buffers/windows with same command
 Plug 'mhinz/vim-sayonara'
@@ -49,8 +47,11 @@ Plug 'jez/vim-superman'
 " Plug 'edsono/vim-matchit'
 " .
 Plug 'tpope/vim-repeat'
-" Ggrep and replace everything (search replace all files)
-Plug 'nelstrom/vim-qargs', { 'on': 'Qargs' } 
+" Ggrep and replace everything (search replace all files): 
+" :Ggrep string :Qargs :argdo %s/string/replace/cg :argdo
+Plug 'nelstrom/vim-qargs' 
+" Exchange words cx{motion} and X (v)
+Plug 'tommcdo/vim-exchange'
 
 call plug#end()
 
@@ -74,11 +75,11 @@ set foldlevel=1                             " Start folding automatically from l
 set fillchars="fold: " 
 
 function! NeoFunc(...)
-  silent :let g:neomake_open_list = 0
+  :let g:neomake_open_list = 0
   :Neomake
 endfunction
 
-" Toggle neomake open list
+" Toggle neomake open list (currently can not be done silently)
 autocmd! BufWritePost * call NeoFunc()
 let g:neomake_open_list = 0
 
@@ -98,9 +99,6 @@ nnoremap <Leader>fl :Lines<CR>
 nnoremap <Leader>fh :History<CR>
 nnoremap <Leader>fa :Ag<CR>
 
-nnoremap <M-n> :bnext<CR>
-nnoremap <M-p> :bprevious<CR>
-
 " ====== Undotree
 nnoremap <Leader>u :UndotreeToggle<CR>
 
@@ -117,6 +115,8 @@ nnoremap <Leader>gl :Gitv<CR>
 
 " General
 set visualbell                  "No sounds
+
+nnoremap <Leader>w :w<CR>
 
 " ================ Color Scheme =====================
 set background=dark
@@ -150,14 +150,45 @@ nnoremap L $
 vnoremap H ^
 vnoremap L g_
 
-" More logical Y (defaul was alias for yy)
+" Yank to EOL (default was alias for yy)
 nnoremap Y y$
 
 " Quick replay q macro
 nnoremap Q @q
 
-" Cancel terminal mode with ,escape
-tnoremap <Leader><ESC> <C-\><C-n>
+" Cancel terminal mode
+tnoremap <M-t> <C-\><C-n>
+
+" ==== Buffers ====
+" = Use M- instead of Leader because of space in terminal
+" Navigate buffers and windows from terminal
+tnoremap <M-h> <C-\><C-n><C-w>h
+tnoremap <M-j> <C-\><C-n><C-w>j
+tnoremap <M-k> <C-\><C-n><C-w>k
+tnoremap <M-l> <C-\><C-n><C-w>l
+tnoremap <M-n> <C-\><C-n>:bnext<CR>
+tnoremap <M-p> <C-\><C-n>:bprevious<CR>
+" Close buffers from terminal
+tnoremap <M-q><M-q> <C-\><C-n>:Sayonara<CR>
+tnoremap <M-q><M-j> <C-\><C-n><C-w>j:Sayonara<CR>
+tnoremap <M-q><M-l> <C-\><C-n><C-w>l:Sayonara<CR>
+tnoremap <M-q><M-k> <C-\><C-n><C-w>k:Sayonara<CR>
+tnoremap <M-q><M-h> <C-\><C-n><C-w>h:Sayonara<CR>
+
+" Navigate buffers and windows
+nnoremap <M-h> <C-w>h
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-l> <C-w>l
+nnoremap <M-n> :bnext<CR>
+nnoremap <M-p> :bprevious<CR>
+" Close buffers
+nnoremap <M-q><M-q> :Sayonara<CR>
+nnoremap <M-q><M-j> <C-w>j:Sayonara<CR>
+nnoremap <M-q><M-l> <C-w>l:Sayonara<CR>
+nnoremap <M-q><M-k> <C-w>k:Sayonara<CR>
+nnoremap <M-q><M-h> <C-w>h:Sayonara<CR>
+" ==== Buffers End ====
 
 " Don't yank to default register when changing something
 nnoremap c "xc
@@ -188,12 +219,9 @@ set wildignore+=*.png,*.jpg,*.gif
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 
 
 " lexima latex rules
-call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': 'latex'})
-call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': 'latex'})
-call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': 'latex'})
-
-" CamelCaseMotion rules
-call camelcasemotion#CreateMotionMappings('<leader>')
+call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': 'tex'})
+call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': 'tex'})
+call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': 'tex'})
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
@@ -209,13 +237,6 @@ vmap <C-v> <Plug>(expand_region_shrink)
 " Sayonara
 " Ask if it is last window
 let g:sayonara_confirm_quit = 1
-
-" ======= quickly close buffers
-nnoremap <Leader>bd :Sayonara<CR>
-nnoremap <Leader>bj <C-w>j:Sayonara<CR>
-nnoremap <Leader>bl <C-w>l:Sayonara<CR>
-nnoremap <Leader>bk <C-w>k:Sayonara<CR>
-nnoremap <Leader>bh <C-w>h:Sayonara<CR>
 
 " NeoTerm
 let g:neoterm_size=60
