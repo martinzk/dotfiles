@@ -50,8 +50,12 @@ Plug 'tpope/vim-repeat'
 " Ggrep and replace everything (search replace all files): 
 " :Ggrep string :Qargs :argdo %s/string/replace/cg :argdo
 Plug 'nelstrom/vim-qargs' 
-" Exchange words cx{motion} and X (v)
+" Exchange words cx{motion} and X (v) and cxc unselect
 Plug 'tommcdo/vim-exchange'
+" File explorer netrw enhancement
+Plug 'tpope/vim-vinegar'
+" Additional text objects: cin) -> change in parentheses
+Plug 'wellle/targets.vim'
 
 call plug#end()
 
