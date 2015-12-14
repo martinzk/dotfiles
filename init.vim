@@ -16,7 +16,7 @@ Plug 'mbbill/undotree'
 Plug 'kassio/neoterm'
 
 " closing
- bbox 'cohama/lexima.vim'
+Plug 'cohama/lexima.vim'
 " commenting gcc (line) or gc{motion}
 Plug 'tomtom/tcomment_vim'
 " Asynchronous completion
@@ -82,7 +82,8 @@ set foldlevel=1                             " Start folding automatically from l
 set fillchars="fold: " 
 
 " disable netrw
-g:vimfiler_as_default_explorer = 1
+let g:vimfiler_as_default_explorer = 1
+nnoremap - :VimFiler<CR>
 
 function! NeoFunc(...)
   :let g:neomake_open_list = 0
