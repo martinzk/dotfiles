@@ -16,7 +16,7 @@ Plug 'mbbill/undotree'
 Plug 'kassio/neoterm'
 
 " closing
-Plug 'cohama/lexima.vim'
+ bbox 'cohama/lexima.vim'
 " commenting gcc (line) or gc{motion}
 Plug 'tomtom/tcomment_vim'
 " Asynchronous completion
@@ -52,17 +52,20 @@ Plug 'tpope/vim-repeat'
 Plug 'nelstrom/vim-qargs' 
 " Exchange words cx{motion} and X (v) and cxc unselect
 Plug 'tommcdo/vim-exchange'
-" File explorer netrw enhancement
-Plug 'tpope/vim-vinegar'
+" File explorer netrw enhancement (not using: netrw leaves modified unmodifable buffers)
+" Plug 'tpope/vim-vinegar'
+" File explorer
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimfiler.vim'
 " Additional text objects: cin) -> change in parentheses
 Plug 'wellle/targets.vim'
-
 call plug#end()
 
 if has("persistent_undo")
     set undodir=~/.undodir/
     set undofile
 endif
+
 " Make sure Vim returns to the same line when you reopen a file.
 augroup line_return
   au!
@@ -77,6 +80,9 @@ filetype plugin indent on
 set foldmethod=marker                       " Markers are used to specify folds.
 set foldlevel=1                             " Start folding automatically from level 1
 set fillchars="fold: " 
+
+" disable netrw
+g:vimfiler_as_default_explorer = 1
 
 function! NeoFunc(...)
   :let g:neomake_open_list = 0
@@ -136,6 +142,7 @@ vmap <Leader>P "+P
 
 " =============== Semi To Colon =====================
 nnoremap ; :
+nnoremap : ;
 
 " =============== Navigation ========================
 "nmap j gj
