@@ -81,6 +81,8 @@ set foldmethod=marker                       " Markers are used to specify folds.
 set foldlevel=1                             " Start folding automatically from level 1
 set fillchars="fold: " 
 
+let g:polyglot_disabled = ['latex']
+
 " disable netrw
 let g:vimfiler_as_default_explorer = 1
 nnoremap - :VimFiler<CR>
