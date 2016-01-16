@@ -90,8 +90,6 @@ values."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
-   ;; Bigger previews in latex
-   preview-scale-function 1.2
    ;; If non nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
    ;; environment, otherwise it is strongly recommended to let it set to t.
@@ -273,6 +271,8 @@ It is called immediately after `dotspacemacs/init'.  You are free to put almost
 any user code here.  The exception is org related code, which should be placed
 in `dotspacemacs/user-config'."
   (setq-default
+   ;; Bigger previews in latex
+   preview-scale-function 1.2
    ;; c# config
    omnisharp--curl-executable-path "/usr/bin/curl"
    omnisharp-server-executable-path "/home/martin/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe"
