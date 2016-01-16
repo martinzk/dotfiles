@@ -97,6 +97,9 @@ set fillchars="fold: "
 " Rainbow parentheses
 autocmd FileType * RainbowParentheses
 
+" Disable for latex
+let g:polyglot_disabled = ['latex']
+
 " disable netrw
 let g:vimfiler_as_default_explorer = 1
 nnoremap <silent> - :VimFilerBufferDir -force-quit<CR>
