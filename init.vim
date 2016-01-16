@@ -1,3 +1,10 @@
+""""""""""""""
+"  Remember  "
+""""""""""""""
+" gf to jump to file under cursor 
+" C-O in insert, execute on command then return
+
+
 let mapleader="\<Space>"
 
 " My plugins
@@ -14,6 +21,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'kassio/neoterm'
+Plug 'junegunn/rainbow_parentheses.vim'
 
 " closing
 Plug 'cohama/lexima.vim'
@@ -55,10 +63,15 @@ Plug 'tommcdo/vim-exchange'
 " File explorer netrw enhancement (not using: netrw leaves modified unmodifable buffers)
 " Plug 'tpope/vim-vinegar'
 " File explorer
-Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim'
 " Additional text objects: cin) -> change in parentheses
 Plug 'wellle/targets.vim'
+" Start screen
+Plug 'mhinz/vim-startify'
+" Auto generate tags
+Plug 'ludovicchabant/vim-gutentags'
+" Split selection to new window: select text C-W gss
+Plug 'wellle/visual-split.vim'
 call plug#end()
 
 if has("persistent_undo")
@@ -81,16 +94,21 @@ set foldmethod=marker                       " Markers are used to specify folds.
 set foldlevel=1                             " Start folding automatically from level 1
 set fillchars="fold: " 
 
+" Rainbow parentheses
+autocmd FileType * RainbowParentheses
+
 " disable netrw
 let g:vimfiler_as_default_explorer = 1
-nnoremap - :VimFiler<CR>
+nnoremap <silent> - :VimFilerBufferDir -force-quit<CR>
+let g:vimfiler_define_wrapper_commands = 1
+let g:vimfiler_safe_mode_by_default = 0
 
 function! NeoFunc(...)
   :let g:neomake_open_list = 0
   :Neomake
 endfunction
 
-" Toggle neomake open list (currently can not be done silently)
+" Toggle neomake open list (currently can not be done silently because neomake)
 autocmd! BufWritePost * call NeoFunc()
 let g:neomake_open_list = 0
 
@@ -109,25 +127,34 @@ nnoremap <Leader>fb :Buffers<CR>
 nnoremap <Leader>fl :Lines<CR>
 nnoremap <Leader>fh :History<CR>
 nnoremap <Leader>fa :Ag<CR>
+nnoremap <Leader>ft :Tags<CR>
+nnoremap <Leader>fs :Snippets<CR>
+nnoremap <Leader>fc :BCommits
+nnoremap <Leader>fm :Marks
+
+""""""""""""""
+"  Startify  "
+""""""""""""""
+let g:startify_bookmarks = [ {'v': '~/dotfiles/init.vim'}, {'a': '~/Documents/sw7/report/master.tex'} ]
 
 " ====== Undotree
-nnoremap <Leader>u :UndotreeToggle<CR>
+nnoremap <silent> <Leader>u :UndotreeToggle<CR>
 
 " ================ Git ===============================
-nnoremap <Leader>gs :T git status<CR>
-nnoremap <Leader>gpl :T git pull<CR>
-nnoremap <Leader>gps :T git push<CR>
-nnoremap <Leader>gb :Gblame<CR>
-nnoremap <Leader>ga :Gwrite<CR>
-nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <silent> <Leader>gs :T git status<CR>
+nnoremap <silent> <Leader>gpl :T git pull<CR>
+nnoremap <silent> <Leader>gps :T git push<CR>
+nnoremap <silent> <Leader>gb :Gblame<CR>
+nnoremap <silent> <Leader>ga :Gwrite<CR>
+nnoremap <silent> <Leader>gd :Gdiff<CR>
 nnoremap <Leader>gc :Gwrite<CR>:Gcommit -m "
 nnoremap <Leader>g. :T git add $(dirname %)<CR>:T git commit $(dirname %) -m "
-nnoremap <Leader>gl :Gitv<CR>
+nnoremap <silent> <Leader>gl :Gitv<CR>
 
 " General
 set visualbell                  "No sounds
 
-nnoremap <Leader>w :w<CR>
+nnoremap <Leader>w :update<CR>
 
 " ================ Color Scheme =====================
 set background=dark
@@ -142,8 +169,8 @@ vmap <Leader>p "+p
 vmap <Leader>P "+P
 
 " =============== Semi To Colon =====================
-nnoremap ; :
-nnoremap : ;
+noremap ; :
+noremap : ;
 
 " =============== Navigation ========================
 "nmap j gj
@@ -186,6 +213,8 @@ tnoremap <M-q><M-j> <C-\><C-n><C-w>j:Sayonara<CR>
 tnoremap <M-q><M-l> <C-\><C-n><C-w>l:Sayonara<CR>
 tnoremap <M-q><M-k> <C-\><C-n><C-w>k:Sayonara<CR>
 tnoremap <M-q><M-h> <C-\><C-n><C-w>h:Sayonara<CR>
+tnoremap <M-q><M-n> <C-\><C-n>:bnext<CR>:Sayonara<CR>
+tnoremap <M-q><M-p> <C-\><C-n>:bprevious<CR>:Sayonara<CR>
 
 " Navigate buffers and windows
 nnoremap <M-h> <C-w>h
@@ -200,6 +229,8 @@ nnoremap <M-q><M-j> <C-w>j:Sayonara<CR>
 nnoremap <M-q><M-l> <C-w>l:Sayonara<CR>
 nnoremap <M-q><M-k> <C-w>k:Sayonara<CR>
 nnoremap <M-q><M-h> <C-w>h:Sayonara<CR>
+nnoremap <M-q><M-n> :bnext<CR>:Sayonara<CR>
+nnoremap <M-q><M-p> :bprevious<CR>:Sayonara<CR>
 " ==== Buffers End ====
 
 " Don't yank to default register when changing something
@@ -280,11 +311,7 @@ set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 set nohlsearch      " Noh after search
 
-" Easier window switching
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+set autowrite
 
 " Highlight VCS conflict markers"{{{
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
@@ -297,41 +324,41 @@ hi! link BufTabLineHidden Comment
 hi! link BufTabLineFill Comment
 
 " ===== Fuzzy search contents directory
-function! s:ag_to_qf(line)
-  let parts = split(a:line, ':')
-  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
-        \ 'text': join(parts[3:], ':')}
-endfunction
-
-function! s:ag_handler(lines)
-  if len(a:lines) < 2 | return | endif
-
-  let cmd = get({'ctrl-x': 'split',
-               \ 'ctrl-v': 'vertical split',
-               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
-
-  let first = list[0]
-  execute cmd escape(first.filename, ' %#\')
-  execute first.lnum
-  execute 'normal!' first.col.'|zz'
-
-  if len(list) > 1
-    call setqflist(list)
-    copen
-    wincmd p
-  endif
-endfunction
-
-command! -nargs=* Ag call fzf#run({
-\ 'source':  printf('ag --nogroup --column --color "%s"',
-\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-\ 'sink*':    function('<sid>ag_handler'),
-\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-\            '--multi --bind ctrl-a:select-all,ctrl-d:deselect-all '.
-\            '--color hl:68,hl+:110',
-\ 'down':    '50%'
-\ })
+" function! s:ag_to_qf(line)
+"   let parts = split(a:line, ':')
+"   return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+"         \ 'text': join(parts[3:], ':')}
+" endfunction
+"
+" function! s:ag_handler(lines)
+"   if len(a:lines) < 2 | return | endif
+"
+"   let cmd = get({'ctrl-x': 'split',
+"                \ 'ctrl-v': 'vertical split',
+"                \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+"   let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+"
+"   let first = list[0]
+"   execute cmd escape(first.filename, ' %#\')
+"   execute first.lnum
+"   execute 'normal!' first.col.'|zz'
+"
+"   if len(list) > 1
+"     call setqflist(list)
+"     copen
+"     wincmd p
+"   endif
+" endfunction
+"
+" command! -nargs=* Ag call fzf#run({
+" \ 'source':  printf('ag --nogroup --column --color "%s"',
+" \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+" \ 'sink*':    function('<sid>ag_handler'),
+" \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+" \            '--multi --bind ctrl-a:select-all,ctrl-d:deselect-all '.
+" \            '--color hl:68,hl+:110',
+" \ 'down':    '50%'
+" \ })
 " ===== Fuzzy search contents directory END
 
 let g:lightline = {
