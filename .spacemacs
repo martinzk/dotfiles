@@ -272,7 +272,7 @@ any user code here.  The exception is org related code, which should be placed
 in `dotspacemacs/user-config'."
   (setq-default
    ;; Bigger previews in latex
-   preview-scale-function 1.2
+   preview-scale-function 1.4
    ;; c# config
    omnisharp--curl-executable-path "/usr/bin/curl"
    omnisharp-server-executable-path "/home/martin/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe"
