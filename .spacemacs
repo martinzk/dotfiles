@@ -295,6 +295,10 @@ in `dotspacemacs/user-config'."
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
+  ;; transparant fringes
+  (set-face-attribute 'fringe nil
+                      :foreground (face-foreground 'default)
+                      :background (face-background 'default))
   (with-eval-after-load 'smartparens
     (show-smartparens-global-mode -1))
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
