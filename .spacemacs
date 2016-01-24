@@ -34,13 +34,14 @@ values."
      csharp
      (c-c++ :variables
             c-c++-enable-clang-support t)
+     deft
      evernote
      evil-cleverparens
      ;; evil-snipe
      eyebrowse
      emacs-lisp
      erlang
-     fasd
+     ;; fasd
      fsharp
      git
      haskell
