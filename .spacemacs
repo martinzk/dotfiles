@@ -52,7 +52,7 @@ values."
             ;; reindent on <CR>
             TeX-newline-function 'reindent-then-newline-and-indent
             ;; if $a^4$ gets annoying
-            ;; font-latex-fontify-script nil
+            font-latex-fontify-script nil
             )
      markdown
      org
@@ -303,7 +303,6 @@ layers configuration. You are free to put any user code."
   (with-eval-after-load 'smartparens
     (show-smartparens-global-mode -1))
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
-  (add-hook 'latex-mode 'visual-line-mode)
   ;; Bind clang-format-buffer to tab on the c++-mode only:
   ;; bind clang for c and header files
   (spacemacs/set-leader-keys-for-major-mode 'c-mode "F" 'clang-format-buffer)
@@ -329,9 +328,10 @@ layers configuration. You are free to put any user code."
   (global-visual-fill-column-mode)
   ;; enable truncate long lines (it extends screen)
   (spacemacs/toggle-truncate-lines-on)
-  ;; Visual line navigation and visual fill per column for textual modes
-  (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
-  (add-hook 'text-mode-hook 'visual-fill-column-mode--enable)
+  ;; Visual line navigation and visual fill per column for latex mode
+  (add-hook 'LaTeX-mode-hook '(lambda () auto-fill-mode -1))
+  (add-hook 'LaTeX-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+  (add-hook 'LaTeX-mode-hook 'visual-fill-column-mode--enable)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
