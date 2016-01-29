@@ -1,0 +1,167 @@
+set $mod Mod4
+
+font pango:Source Sans Pro 15px
+set $myres       10
+set $gsi         0
+set $gso         200
+
+set $bordersize  0
+
+set $COLOR0     #3e5059
+set $COLOR8     #70838
+set $COLOR15    #f0eae6
+
+#######################################################################
+#                           random settings                           #
+#######################################################################
+
+focus_follows_mouse     no
+popup_during_fullscreen smart
+workspace_layout        default
+
+#######################################################################
+#                               colors                                #
+#######################################################################
+
+# Layout colors                 bord           bg             text           indicator (split)
+client.focused                  $COLOR0        $COLOR0        $COLOR0        $COLOR0
+client.focused_inactive         $COLOR0        $COLOR0        $COLOR0        $COLOR0
+client.unfocused                $COLOR0        $COLOR0        $COLOR0        $COLOR0
+client.urgent                   $COLOR0        $COLOR0        $COLOR0        $COLOR0
+client.background               $COLOR0
+
+# hide_edge_borders       none
+gaps                    inner 0
+gaps                    outer 0
+# workspace 1 gaps inner $gsi
+# workspace 1 gaps outer $gso
+
+new_float               pixel $bordersize
+new_window              pixel $bordersize
+
+# start a terminal
+bindsym $mod+Return exec xterm
+
+# kill focused window
+bindsym $mod+c kill
+
+# start dmenu (a program launcher)
+bindsym $mod+p exec i3-dmenu-desktop --dmenu="dmenu -fn 'Source Sans Pro' -nb black"
+
+# screen lock
+bindsym Control+$mod+l exec slimlock
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+v split h
+
+# split in vertical orientation
+bindsym $mod+g split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen
+
+# change container layout (tabbed, toggle split)
+bindsym $mod+n layout tabbed
+bindsym $mod+m layout toggle split
+
+# container navigation
+bindsym $mod+d focus parent
+bindsym $mod+b focus child
+
+# move container between displays
+bindsym $mod+semicolon move workspace to output right
+
+# toggle tiling / floating
+bindsym $mod+Shift+f floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# switch to last workspace
+bindsym $mod+6 workspace back_and_forth
+
+# switch to workspace
+bindsym $mod+q workspace 1: q
+bindsym $mod+w workspace 2: w
+bindsym $mod+e workspace 3: e
+bindsym $mod+r workspace 4: r
+bindsym $mod+t workspace 5: t
+bindsym $mod+y workspace 6: y
+bindsym $mod+u workspace 7: u
+bindsym $mod+i workspace 8: i
+bindsym $mod+o workspace 9: o
+
+# move focused container to workspace
+bindsym $mod+Shift+q move container to workspace 1: q
+bindsym $mod+Shift+w move container to workspace 2: w
+bindsym $mod+Shift+e move container to workspace 3: e
+bindsym $mod+Shift+r move container to workspace 4: r
+bindsym $mod+Shift+t move container to workspace 5: t
+bindsym $mod+Shift+y move container to workspace 6: y
+bindsym $mod+Shift+u move container to workspace 7: u
+bindsym $mod+Shift+i move container to workspace 8: i
+bindsym $mod+Shift+o move container to workspace 9: o
+
+bindsym $mod+z reload
+bindsym $mod+Shift+x restart
+bindsym $mod+Shift+z exit
+
+mode "resize" {
+        bindsym h   resize shrink width 10 px or 10 ppt
+        bindsym j   resize grow height 10 px or 10 ppt
+        bindsym k   resize shrink height 10 px or 10 ppt
+        bindsym l   resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or q or ^[
+        bindsym Return mode "default"
+        bindsym q mode "default"
+        bindsym Escape mode "default"
+        bindcode Control+34 mode "default"
+}
+
+bindsym $mod+s mode "resize"
+
+# multimedia keys
+bindsym XF86AudioRaiseVolume exec "amixer -D pulse sset Master '3%+'"
+bindsym XF86AudioLowerVolume exec "amixer -D pulse sset Master '1%-'"
+bindsym XF86AudioMute exec "amixer -D pulse set Master toggle"
+# bindsym XF86AudioMicMute exec "amixer -D pulse sset Capture toggle"
+
+bindsym XF86AudioPlay exec "~/.bin/player toggle"
+bindsym XF86AudioStop exec "~/.bin/player stop"
+bindsym XF86AudioNext exec "~/.bin/player next"
+bindsym XF86AudioPrev exec "~/.bin/player previous"
+
+bindsym XF86MonBrightnessUp exec xbacklight -inc 3
+bindsym XF86MonBrightnessDown exec xbacklight -dec 3
+
+bindsym XF86TouchpadToggle exec "synclient TouchpadOff=$(synclient | awk '/TouchpadOff/ {print ($3+1)%2}')"
+
+bindsym XF86Display exec "arandr"
+
+# bindsym $mod+a exec "urxvtc -e alsamixer"
+# bindsym $mod+Shift+a exec "pavucontrol"
+
+bar {
+        position top
+        status_command ~/dotfiles/i3-config/bin/conky-wrapper
+        colors {
+                statusline #AAAAAA
+                background $gray2
+                focused_workspace $gray2 $gray2 #FFFFFF
+                inactive_workspace $gray1 $gray1 #AAAAAA
+        }
+}
+
