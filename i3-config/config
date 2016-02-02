@@ -1,6 +1,6 @@
 set $mod Mod4
 
-font pango:Source Sans Pro 15px
+font pango:Source Han Sans 15px
 set $myres       10
 set $gsi         0
 set $gso         200
@@ -16,6 +16,8 @@ set $COLOR15    #f0eae6
 #######################################################################
 
 focus_follows_mouse     no
+force_focus_wrapping    yes
+# new_window pixel
 popup_during_fullscreen smart
 workspace_layout        default
 
@@ -46,7 +48,7 @@ bindsym $mod+Return exec xterm
 bindsym $mod+c kill
 
 # start dmenu (a program launcher)
-bindsym $mod+p exec i3-dmenu-desktop --dmenu="dmenu -fn 'Source Sans Pro' -nb black"
+bindsym $mod+p exec i3-dmenu-desktop --dmenu="dmenu -fn 'Source Han Sans' -nb black"
 
 # screen lock
 bindsym Control+$mod+l exec slimlock

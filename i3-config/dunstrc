@@ -1,5 +1,5 @@
 [global]
-    font = Source Sans Pro 15
+    font = Source Han Sans 15
 
     format = "%a: %s %b"
     sort = yes
