@@ -287,7 +287,7 @@ in `dotspacemacs/user-config'."
    doc-view-resolution 200
    ;; Browser set to chromium
    browse-url-browser-function 'browse-url-generic
-   browse-url-generic-program "chromium"
+   browse-url-generic-program "google-chrome-stable"
    )
   )
 
@@ -322,7 +322,8 @@ layers configuration. You are free to put any user code."
      'org-babel-load-languages '((python . t)
                                  (shell . t)
                                  (emacs-lisp . t)
-                                 (latex . t))
+                                 (latex . t)
+                                 (C . t))
      ))
   (spacemacs/toggle-evil-cleverparens-on)
   (global-visual-fill-column-mode)
