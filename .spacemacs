@@ -1,8 +1,3 @@
-; - * -mode:emacs - lisp - * - ;
-;
-; This file is loaded by Spacemacs at startup.;
-; It must be stored in your home directory.
-
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
@@ -41,7 +36,7 @@ values."
      eyebrowse
      emacs-lisp
      erlang
-     ;; fasd
+     fasd
      fsharp
      git
      haskell
@@ -66,7 +61,7 @@ values."
             shell-default-height 30
             shell-default-position 'bottom
             shell-default-term-shell "/usr/bin/zsh")
-     spell-checking
+     (spell-checking :variables spell-checking-enable-by-default nil)
      syntax-checking
      version-control
      )
@@ -303,13 +298,12 @@ layers configuration. You are free to put any user code."
   (with-eval-after-load 'smartparens
     (show-smartparens-global-mode -1))
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
-  ;; Bind clang-format-buffer to tab on the c++-mode only:
   ;; bind clang for c and header files
-  (spacemacs/set-leader-keys-for-major-mode 'c-mode "F" 'clang-format-buffer)
-  (spacemacs/set-leader-keys-for-major-mode 'c-mode "f" 'clang-format-region)
+  (spacemacs/set-leader-keys-for-major-mode 'c-mode "F" 'clang-format-buffer
+                                                    "f" 'clang-format-region)
   ;; bind clang for c++ files
-  (spacemacs/set-leader-keys-for-major-mode 'c++-mode "F" 'clang-format-buffer)
-  (spacemacs/set-leader-keys-for-major-mode 'c++-mode "f" 'clang-format-region)
+  (spacemacs/set-leader-keys-for-major-mode 'c++-mode "F" 'clang-format-buffer
+                                                      "f" 'clang-format-region)
   ;; evilified proced
   (with-eval-after-load 'proced
     (evilified-state-evilify-map proced-mode-map

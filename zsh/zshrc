@@ -10,3 +10,9 @@ zstyle :compinstall filename '/home/martin/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
+
+alias pau='pacaur -Syu'
+alias pas='pacaur -S'
+alias par='pacaur -Rs'
+
+eval "$(fasd --init auto)"
