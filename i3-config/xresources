@@ -1,43 +1,20 @@
 ! vim: set filetype=xdefaults :
 
-! URxvt.perl-ext-common : default,keyboard-select,url-select,clipboard,font-size
+XTerm*faceName: Source Code Pro for Powerline:pixelsize=15
+XTerm*loginshell: 1
+XTerm*locale: 1
+XTerm.utf8: 1
+XTerm*utf8Title: 1
 
-! URxvt.keysym.M-x           : perl:keyboard-select:activate
-! URxvt.keysym.M-u           : perl:url-select:select_next
-! URxvt.keysym.M-c           : perl:clipboard:copy
-! URxvt.keysym.M-v           : perl:clipboard:paste
-! URxvt.keysym.M-s           : perl:keyboard-select:search
-! URxvt.keysym.M-C-v         : perl:clipboard:paste_escaped
-! URxvt.url-select.launcher  : firefox
-! URxvt.url-select.autocopy  : true
-! URxvt.url-select.underline : true
-
-! https://github.com/majutsushi/urxvt-font-size
-! URxvt.keysym.C-equal:     perl:font-size:increase
-! URxvt.keysym.C-minus:   perl:font-size:decrease
-
-
-! XTerm*faceName: Source Code Pro
-XTerm*faceName: Source Code Pro:antialias=True:pixelsize=15
-! Xterm*faceSize: 11
-! URxvt.termName    : rxvt-256color
-! URxvt.iso14755    : false
-
-! URxvt.urgentOnBell: true
-
-! URxvt.saveLines   : 12000
-! URxvt.scrollBar   : false
-! URxvt.scrollstyle : rxvt
-
-! XFT
 Xft.autohint: 0
-Xft.antialias: 1
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintslight
 Xft.hinting: 1
-Xft.hintstyle: hintslight
+Xft.antialias: 1
 Xft.rgba: rgb
-Xft.lcdfilter: lcddefault
 
 Xcursor.theme: DMZ-White
+
 !Fading
 XTerm.fading    : 50
 XTerm.fadeColor : #29303a

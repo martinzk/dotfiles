@@ -295,9 +295,14 @@ layers configuration. You are free to put any user code."
   (set-face-attribute 'fringe nil
                       :foreground (face-foreground 'default)
                       :background (face-background 'default))
+  ;; disable parentheses highlight
   (with-eval-after-load 'smartparens
     (show-smartparens-global-mode -1))
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+  ;; avy-goto-char-timer instead of goto-char
+  (spacemacs/set-leader-keys "SPC" 'avy-goto-char-timer)
+
   ;; bind clang for c and header files
   (spacemacs/set-leader-keys-for-major-mode 'c-mode "F" 'clang-format-buffer
                                                     "f" 'clang-format-region)

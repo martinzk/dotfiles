@@ -42,7 +42,7 @@ new_float               pixel $bordersize
 new_window              pixel $bordersize
 
 # start a terminal
-bindsym $mod+Return exec xterm
+bindsym $mod+Return exec xterm -u8
 
 # kill focused window
 bindsym $mod+c kill
