@@ -28,7 +28,8 @@ values."
      better-defaults
      csharp
      (c-c++ :variables
-            c-c++-enable-clang-support t)
+            c-c++-enable-clang-support t
+            c-c++-default-mode-for-headers 'c++-mode)
      deft
      evernote
      evil-cleverparens
@@ -39,6 +40,7 @@ values."
      fasd
      fsharp
      git
+     github
      haskell
      ibuffer
      (latex :variables
@@ -69,7 +71,8 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(visual-fill-column)
+   dotspacemacs-additional-packages '(visual-fill-column
+                                      android-mode)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -328,10 +331,14 @@ layers configuration. You are free to put any user code."
   (global-visual-fill-column-mode)
   ;; enable truncate long lines (it extends screen)
   (spacemacs/toggle-truncate-lines-on)
+  (add-hook 'org-mode-hook 'spacemacs/toggle-auto-fill-mode-on)
   ;; Visual line navigation and visual fill per column for latex mode
   (add-hook 'LaTeX-mode-hook '(lambda () auto-fill-mode -1))
   (add-hook 'LaTeX-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'LaTeX-mode-hook 'visual-fill-column-mode--enable)
+  ;; (add-hook 'magit-mode-hook '(lambda () auto-fill-mode -1))
+  ;; (add-hook 'magit-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+  ;; (add-hook 'magit-mode-hook 'visual-fill-column-mode--enable)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
