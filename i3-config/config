@@ -48,7 +48,10 @@ bindsym $mod+Return exec xterm -u8
 bindsym $mod+c kill
 
 # start dmenu (a program launcher)
-bindsym $mod+p exec i3-dmenu-desktop --dmenu="dmenu -fn 'Source Han Sans' -nb black"
+bindsym $mod+p exec i3-dmenu-desktop --dmenu="rofi -dmenu -fn 'Source Han Sans'"
+# bindsym $mod+p exec i3-dmenu-desktop --dmenu="rofi -dmenu -fg "#B0E670" -bg "#14161F" -hlfg "#14161F" -hlbg "#B0E670" -bc "#14161F" -font "Source Han Sans 16" -separator-style none -opacity 80"
+# bindsym $mod+p exec rofi -dmenu
+# bindsym $mod+p exec rofi -show run -width 1920 -fg "#B0E670" -bg "#14161F" -hlfg "#14161F" -hlbg "#B0E670" -bc "#14161F" -location 0 -lines 19 -bw 0 -font "Source Han Sans 16" -padding 180 -separator-style none -opacity 80
 
 # screen lock
 bindsym Control+$mod+l exec slimlock

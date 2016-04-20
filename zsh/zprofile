@@ -1,1 +1,4 @@
 eval $(keychain --eval --quiet id_rsa)
+
+# Ruby gems
+export PATH=$PATH:/home/martin/.gem/ruby/2.3.0/bin
