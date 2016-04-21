@@ -1,6 +1,6 @@
 # zathurarc-dark
 
-set font                        "inconsolata 9"
+set font                        "Source Code Pro 9"
 set default-bg                  "#151515" #00
 set default-fg                  "#202020" #01
 
