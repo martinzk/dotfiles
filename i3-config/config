@@ -1,15 +1,46 @@
+# $i3-status
+# color_bad = "#DC322F"
+# color_degraded = "#b58900"
+# color_good = "#859900"
+
+# $i3-theme-window
+# solarized accents
+set $yellow	#b58900
+set $orange	#cb4b16
+set $red	#dc322f
+set $magenta	#d33682
+set $violet	#6c71c4
+set $blue	#268bd2
+set $cyan	#2aa198
+set $green	#859900
+
+# solarized dark
+# set $baseA3 #002b36
+# set $baseA2 #073642
+# set $baseA1 #586e75
+# set $baseA0 #657b83
+# set $baseB0 #839496
+# set $baseB1 #93a1a1
+# set $baseB2 #eee8d5
+# set $baseB3 #fdf6e3
+# set $custom #1c5766
+
+# solarized light
+set $baseA3 #fdf6e3
+set $baseA2 #eee8d5
+set $baseA1 #93a1a1
+set $baseA0 #839496
+set $baseB0 #657b83
+set $baseB1 #586e75
+set $baseB2 #073642
+set $baseB3 #002b36
+set $custom #e1cab3
+
 set $mod Mod4
-
+for_window [class="^.*"] border pixel 1
 font pango:Source Han Sans 15px
-set $myres       10
-set $gsi         0
-set $gso         200
 
-set $bordersize  0
-
-set $COLOR0     #3e5059
-set $COLOR8     #70838
-set $COLOR15    #f0eae6
+set $bordersize 0
 
 #######################################################################
 #                           random settings                           #
@@ -20,19 +51,21 @@ force_focus_wrapping    yes
 # new_window pixel
 popup_during_fullscreen smart
 workspace_layout        default
+workspace 8 output HDMI1
+smart_borders on
 
 #######################################################################
 #                               colors                                #
 #######################################################################
 
 # Layout colors                 bord           bg             text           indicator (split)
-client.focused                  $COLOR0        $COLOR0        $COLOR0        $COLOR0
-client.focused_inactive         $COLOR0        $COLOR0        $COLOR0        $COLOR0
-client.unfocused                $COLOR0        $COLOR0        $COLOR0        $COLOR0
-client.urgent                   $COLOR0        $COLOR0        $COLOR0        $COLOR0
-client.background               $COLOR0
+#
+#
+#
+#
+# client.background               $COLOR0
 
-# hide_edge_borders       none
+hide_edge_borders       none
 gaps                    inner 0
 gaps                    outer 0
 # workspace 1 gaps inner $gsi
@@ -48,10 +81,11 @@ bindsym $mod+Return exec xterm -u8
 bindsym $mod+c kill
 
 # start dmenu (a program launcher)
-bindsym $mod+p exec i3-dmenu-desktop --dmenu="rofi -dmenu -fn 'Source Han Sans' -fg '#c5c8c6' -bg '#1d1f21' -hlfg '#81a2be' -hlbg '#282a2e' -bc '#1d1f21' -separator-style none -opacity 80 -width 1920 -padding 430 -location 0 -lines 10"
+# bindsym $mod+p exec i3-dmenu-desktop --dmenu="rofi -dmenu -fn 'Source Han Sans' -fg '#c5c8c6' -bg '#1d1f21' -hlfg '#81a2be' -hlbg '#282a2e' -bc '#1d1f21' -separator-style none -opacity 80 -width 1920 -padding 430 -location 0 -lines 10"
 # bindsym $mod+p exec i3-dmenu-desktop --dmenu="rofi -dmenu -fg "#B0E670" -bg "#14161F" -hlfg "#14161F" -hlbg "#B0E670" -bc "#14161F" -font "Source Han Sans 16" -separator-style none -opacity 80"
-# bindsym $mod+p exec rofi -dmenu
+bindsym $mod+p exec i3-dmenu-desktop --dmenu="dmenu -fn 'Source Han Sans' -nb black"
 # bindsym $mod+p exec rofi -show run -width 1920 -fg "#B0E670" -bg "#14161F" -hlfg "#14161F" -hlbg "#B0E670" -bc "#14161F" -location 0 -lines 19 -bw 0 -font "Source Han Sans 16" -padding 180 -separator-style none -opacity 80
+
 
 # screen lock
 bindsym Control+$mod+l exec slimlock
@@ -160,13 +194,33 @@ bindsym XF86Display exec "arandr"
 # bindsym $mod+Shift+a exec "pavucontrol"
 
 bar {
-        position top
+  position top
         status_command ~/dotfiles/i3-config/bin/conky-wrapper
-        colors {
-                statusline #AAAAAA
-                background $gray2
-                focused_workspace $gray2 $gray2 #FFFFFF
-                inactive_workspace $gray1 $gray1 #AAAAAA
-        }
-}
+  colors {
+    # separator #dc322f
+    # background #fdf6e3
+    # statusline #268bd2
+    # focused_workspace #859900 #fdf6e3 #859900
+    # active_workspace #fdf6e3 #6c71c4 #fdf6e3
+    # inactive_workspace #fdf6e3 #fdf6e3 #859900
+    # urgent_workspace #d33682 #d33682 #fdf6e3# status
+    separator $blue
+    background $baseA3
+    statusline $baseB2
 
+    focused_workspace		$green  $green  $baseA3
+    active_workspace		$cyan   $cyan   $baseA2
+    inactive_workspace		$baseA2 $baseA2 $baseB1
+    urgent_workspace		$orange $orange $baseB3
+    urgent_workspace		$yellow $yellow $baseB3
+  }
+}
+###################
+# solarized (clean)
+###################
+# clientclass 			border  backgr. text 	indicator
+client.focused 			$green	$green	$baseB3 $blue
+client.focused_inactive		$cyan	$cyan	$baseB2 $violet
+client.unfocused  		$baseA2 $baseA2 $baseB1 $baseA1
+#client.urgent 	 		$orange $orange $baseB3 $red
+client.urgent 	 		$yellow $yellow $baseB3 $orange

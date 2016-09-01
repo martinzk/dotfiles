@@ -22,13 +22,13 @@ xrdb -merge ~/dotfiles/i3-config/xresources
 
 # background
 # [ -e ~/.fehbg ] && source ~/.fehbg
-feh --bg-scale ~/.fehbg.png
+feh --bg-tile ~/.fehbg.png
 
 # hide mouse coursor when it isn't used
 unclutter &
 
 # pulse audio session
-start-pulseaudio-x11
+# start-pulseaudio-x11
 
 # keyboard layout
 xmodmap ~/dotfiles/i3-config/xmodmap
@@ -67,6 +67,8 @@ xcape -e 'Control_L=Escape'
 
 # alt-shift keyboard layout
 setxkbmap -layout us,dk -option grp:alt_shift_toggle
+
+insync start
 
 i3
 

@@ -35,19 +35,21 @@
     history = mod4+grave
 
 [urgency_low]
-    background = "#404040"
-    foreground = "#CCCCCC"
-    timeout = 10
+    # IMPORTANT: colors have to be defined in quotation marks.
+    # Otherwise the '#' and following  would be interpreted as a comment.
+    background = "#2a2a2a"
+    foreground = "#a0a0a0"
+    timeout = 2
 
 [urgency_normal]
-    background = "#859900"
-    foreground = "#DDDDDD"
-    timeout = 10
+    background = "#1c1616"
+    foreground = "#b6a6a4"
+    timeout = 2
 
 [urgency_critical]
-    background = "#dc322f"
-    foreground = "#DDDDDD"
-    timeout = 0
+    background = "#AB4642"
+    foreground = "#f0f0f0"
+    timeout = 8
 
 [ignore]
     appname = "Spotify"

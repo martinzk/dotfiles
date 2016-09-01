@@ -4,8 +4,8 @@ set font                        "Source Code Pro 9"
 set default-bg                  "#151515" #00
 set default-fg                  "#202020" #01
 
-set statusbar-fg                "#B0B0B0" #04
 set statusbar-bg                "#202020" #01
+set statusbar-fg                "#B0B0B0" #04
 
 set inputbar-bg                 "#151515" #00 currently not used
 set inputbar-fg                 "#303030" #02

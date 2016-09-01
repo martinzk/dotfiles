@@ -295,6 +295,7 @@ in `dotspacemacs/user-config'."
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
   ;; transparant fringes
+
   (set-face-attribute 'fringe nil
                       :foreground (face-foreground 'default)
                       :background (face-background 'default))
@@ -339,6 +340,7 @@ layers configuration. You are free to put any user code."
   ;; (add-hook 'magit-mode-hook '(lambda () auto-fill-mode -1))
   ;; (add-hook 'magit-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   ;; (add-hook 'magit-mode-hook 'visual-fill-column-mode--enable)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -356,3 +358,4 @@ layers configuration. You are free to put any user code."
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+

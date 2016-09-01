@@ -14,5 +14,6 @@ compinit
 alias pau='pacaur -Syu'
 alias pas='pacaur -S'
 alias par='pacaur -Rs'
+alias -g G='| grep'
 
 eval "$(fasd --init auto)"

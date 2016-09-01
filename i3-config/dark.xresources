@@ -39,7 +39,7 @@ XTerm*.color11:      t_yellow
 XTerm*.color4:       t_blue
 XTerm*.color12:      t_blue
 
-! Magenta (Purple) + Bright Magenta
+! Magenta (Purple) + Bright M
 XTerm*.color5:       t_purple
 XTerm*.color13:      #b777e0
 
@@ -50,3 +50,12 @@ XTerm*.color14:      #54ced6
 ! Light Grey (Selection) + White (Current Line)
 XTerm*.color7:       t_selection
 XTerm*.color15:      t_current_line
+
+! ------------------------------------------------------------------------------
+! ROFI Color theme
+! ------------------------------------------------------------------------------
+rofi.color-enabled: true
+rofi.color-window: t_background, t_background, t_current_line
+rofi.color-normal: t_background, t_selection, t_background, t_foreground, #ffffff
+rofi.color-active: t_background, #80cbc4, t_background, #394249, #80cbc4
+rofi.color-urgent: t_background, #ff1844, t_background, #394249, #ff1844

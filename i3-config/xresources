@@ -1,22 +1,33 @@
 ! vim: set filetype=xdefaults :
 
-XTerm*faceName: Source Code Pro for Powerline:pixelsize=15
+XTerm*faceName: Source Code Pro:pixelsize=15
 XTerm*loginshell: 1
 XTerm*locale: 1
 XTerm.utf8: 1
 XTerm*utf8Title: 1
 
+URxvt.font        : xft:Source Code Pro for Powerline-15
+URxvt.termName    : rxvt-256color
+URxvt.iso14755    : false
+
+URxvt.urgentOnBell: true
+
+URxvt.saveLines   : 12000
+URxvt.scrollBar   : false
+URxvt.scrollstyle : rxvt
+
+! XFT
+Xft.lcdfilter : lcddefault
+Xft.hintstyle : hintslight
+Xft.hinting   : true
+Xft.antialias : true
+Xft.rgba      : rgb
 Xft.autohint: 0
-Xft.lcdfilter:  lcddefault
-Xft.hintstyle:  hintslight
-Xft.hinting: 1
-Xft.antialias: 1
-Xft.rgba: rgb
 
 Xcursor.theme: DMZ-White
 
 !Fading
-XTerm.fading    : 50
-XTerm.fadeColor : #29303a
+! XTerm.fading    : 50
+! XTerm.fadeColor : #29303a
 
-#include "dark.xresources"
+#include "light.xresources"

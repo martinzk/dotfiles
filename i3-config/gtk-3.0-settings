@@ -1,5 +1,5 @@
 [Settings]
-gtk-theme-name = FlatstudioDark
+gtk-theme-name=Numix Solarized Light
 gtk-fallback-icon-theme = AwOkenDark
 gtk-application-prefer-dark-theme = 0
 gtk-font-name = Source Han Sans 11
