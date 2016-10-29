@@ -1,0 +1,68 @@
+\documentclass[a4paper]{report}
+
+\usepackage[a4paper, total={18cm, 26cm}]{geometry}
+\usepackage[T1]{fontenc} % needed by beramono
+\usepackage{textcomp}
+% beramono.sty and MnSymbol.sty come with texlive-fonts-extra in Debian
+\usepackage[scaled=0.85]{beramono} % tt font supporting slshape and zero with dot
+\usepackage{MnSymbol} % fancy symbols for line-breaks
+\usepackage{listings} % code listings, comes with texlive-latex-recommended
+\usepackage{xcolor}
+
+\lstdefinestyle{bwC++}{
+  language=C++,morekeywords={constexpr},
+  basicstyle=\ttfamily,
+  keywordstyle=\bfseries,
+  stringstyle=\slshape,
+  commentstyle=\slshape,
+  morecomment=[s][\bfseries\slshape]{/**}{*/},
+  tabsize=4,
+  showstringspaces=false,
+  breaklines=true, breakatwhitespace=true,
+  prebreak={\hbox{\quad$\rhookswarrow$}},
+  postbreak={\hbox{$\lhookrightarrow$}},
+  breakindent={-8pt}, breakautoindent=false,
+  numbers=left, numberstyle=\tiny,
+  frameshape={RYR}{N}{N}{YYY} %frame=tb,frameround=tttt
+}
+
+\lstdefinestyle{colorC++}{
+  language=C++,morekeywords={constexpr},
+  basicstyle=\ttfamily,
+  keywordstyle=\textcolor{blue},
+  stringstyle=\slshape\textcolor{red!70!black},
+  commentstyle=\slshape\textcolor{green!50!black},
+  morecomment=[s][\bfseries\slshape\textcolor{green!50!black}]{/**}{*/},
+  tabsize=4,
+  showstringspaces=false,
+  breaklines=true, breakatwhitespace=true,
+  prebreak={\hbox{\quad\textcolor{red}{$\rhookswarrow$}}},
+  postbreak={\hbox{\textcolor{red}{$\lhookrightarrow$}}},
+  breakindent={-8pt}, breakautoindent=false,
+  numbers=left, numberstyle=\tiny,
+  frameshape={RYR}{N}{N}{YYY} %frame=tb,frameround=tttt
+}
+
+\title{Source Listing Advanced Programming 2}
+\author{Martin Zimmer Kristensen}
+
+\begin{document}
+\maketitle
+\lstinputlisting[style=colorC++,caption={main.cpp}]{main.cpp}
+\lstinputlisting[style=colorC++,caption={json.h}]{json.h}
+\lstinputlisting[style=colorC++,caption={type\_check.h}]{type_check.h}
+\lstinputlisting[style=colorC++,caption={detection.h}]{detection.h}
+\lstinputlisting[style=colorC++,caption={element.h}]{element.h}
+\lstinputlisting[style=colorC++,caption={city.h}]{city.h}
+\lstinputlisting[style=colorC++,caption={coord.h}]{coord.h}
+\lstinputlisting[style=colorC++,caption={data.h}]{data.h}
+\lstinputlisting[style=colorC++,caption={main.h}]{main.h}
+\lstinputlisting[style=colorC++,caption={weather.h}]{weather.h}
+\lstinputlisting[style=colorC++,caption={clouds.h}]{clouds.h}
+\lstinputlisting[style=colorC++,caption={wind.h}]{wind.h}
+\lstinputlisting[style=colorC++,caption={snow.h}]{snow.h}
+\lstinputlisting[style=colorC++,caption={rain.h}]{rain.h}
+\lstinputlisting[style=colorC++,caption={sys.h}]{sys.h}
+\lstinputlisting[style=colorC++,caption={city-statistics.h}]{city-statistics.h}
+\lstinputlisting[style=colorC++,caption={country-statistics.h}]{country-statistics.h}
+\end{document}
