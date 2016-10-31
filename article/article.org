@@ -35,6 +35,9 @@
     - Named Entity Recognition
     - Speech Recognition
 ** Generative Versus Discriminative
+   - Generative models: naive Bayes, hidden Markov model, dynamic Bayesian network
+   - Discriminative models: logistic regression, conditional random field
+** Generative Versus Discriminative
 *** Generative Models:
     - The joint probability $p(x,y)$
       - Able to generate $x$
