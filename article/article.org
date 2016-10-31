@@ -19,10 +19,9 @@
 #+OPTIONS: H:2 TOC:1
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 * Introduction
-** Introduction
+** Motivation
    - Sequential Data
-   - Generative Versus Discriminative
-   - Conditional Random Fields
+   - Discriminative Model
    # #+ATTR_LATEX: :float t :width 5cm :center t
    # [[/home/martin/article/figures/LCRF.pdf]]
 ** Sequential Data
@@ -66,16 +65,16 @@
     - Conditional probability defined as:
    \[ p_\Lambda(y|x) = \dfrac{1}{Z(x)}\prod_{c \in C} \Phi (y_c, x_c) \]
    - $\Phi$ is a potential function
-   - $Z(x)$ is a normalization factor
+   - $Z(x)$ is the partition function
 ** Potential function
 *** Feature Functions
-   - Potentials factorize according to a set of features functions $\{f_k\}$:
+   - Potentials factorize according to a set of weights $\{\lambda_k\}$ and feature functions $\{f_k\}$:
    \[ f(y_c,x_c) = exp\Bigg(\sum_k \lambda_kf_k(y_c,x_c)\Bigg) \]
 ** Linear-chain CRF
 #+ATTR_LATEX: :float t :width 5cm :center t
-[[/home/martin/article/figures/LCRF.pdf]]
-   - A special case of CRFs where the first-order Markov assumption is made over the latent variables.
-   - Then the feature functions can be described as:
+[[file:figures/LCRF.pdf]]
+   - Conditional version of hidden Markov models
+   - Feature functions can be described as:
     \[ f_k(y_{t-1},y_t,x,t) \]
 ** Linear-chain CRF
 *** Feature Functions:
@@ -87,37 +86,33 @@
 ** Key Contributions
    - Dynamic Conditional Random Fields (DCRF)
      - Factorial CRF
-     - Exact inference for some models
-     - Inference approximation:
-       - Lower training time
-       - Equal performance
+     - Exact inference intractable for some models:
+       - Use an inference approximation algorithm
    #+attr_latex: :float t :width \textwidth :center t
   [[file:figures/DCRF.pdf]]
 # ** DCRF
 #    - Let $y = \{y_1 \dots{} y_T\}$ be a sequence of random vectors:
 #      - $y_i = (y_{i1} \ldots{} y_{im})$ where $y_i$ is the state vector at time $i$, and
 #      - $y_{ij}$ is the value of variable $j$ at time $t$
-# ** Clique Index
-#    - To give the likelihood equation, we require a way to describe a clique independent of its position in the sequence:
-# *** Clique Index                                               :B_definition:
-#     :PROPERTIES:
-#     :BEAMER_env: definition
-#     :END:
-#     - Given a time $t$, denote any variable $y_{ij}$ in $y$ by:
-#       - Its index $j$ in $y_i$
-#       - Its time offset $\Delta t = i-t$
-#     - Then $c = \{(\Delta t, j)\}$ is a clique index, which denotes a set of variables $y_{t,c} =uiv \{y_{t+\Delta t,j} | (\Delta t,j) \in c\}$
+** DCRF
+*** Clique Index                                               :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+    - Given a time $t$, denote any variable $y_{ij}$ in $y$ by:
+      - Its index $j$ in $y_i$
+      - Its time offset $\Delta t = i-t$
+    - $c = \{(\Delta t, j)\}$ is a clique index
+    - $y_{t,c}$ is the set of variables in clique index $c$ at time $t$
 ** DCRF
 *** Dynamic Conditional Random Field                           :B_definition:
     :PROPERTIES:
     :BEAMER_env: definition
     :END:
-    - Cliques are defined by its index $j$ and its time offset $\Delta t = i-t$
-      - I.e. $y_{12}$ when $t = 1$ is denoted as $y_{02}$ since $\Delta t = 0$
     - $p(y|x) = \dfrac{1}{Z(x)}\displaystyle \prod_{t}\prod_{c \in C} \text{exp}\Bigg(\sum_k \lambda_k f_k(y_{t,c},x,t)\Bigg)$
     - where $Z(x)$ is the partition function
 ** Factorial CRF
-   - A DCRF which has linear chains of labels, with connection between cotemporal labels.
+   - A DCRF which has linear chains of labels, with edges between cotemporal labels.
    #+attr_latex: :float t :width 5cm :center t
    [[file:figures/FCRF.pdf]]
 ** Factorial CRF
@@ -140,22 +135,22 @@
        \[\Phi_\ell(y_{\ell,t},y_{\ell,t+1},x,t) = \text{exp}\Bigg\{\sum_k\lambda_k f_k(y_{\ell,t},y_{\ell,t+1},x,t)\Bigg\}\text{,}\]
        \[\Psi_\ell(y_{\ell,t},y_{\ell+1,t},x,t) = \text{exp}\Bigg\{\sum_k\lambda_k f_k(y_{\ell,t},y_{\ell+1,t},x,t)\Bigg\}\text{.}\]
 ** Inference
-   - Exact inference can be expensive for many models
-   - Use approximate inference using loopy belief propagation
+   - Exact inference intractable for some models
+   - Approximate inference using loopy belief propagation
 ** Inference
 *** Loopy Belief Propagation
     - Message from node $x_u$ to node $x_v$:
       \[ m_{x_u}(x_v) \]
     - Value of $m_{x_u}(x_v)$:
       - The belief of $x_u$ about the probability $p(x_j)$
-    - Iteratively send messages until convergence
+    - Iteratively send messages until convergence or early cutoff
     - Different schedules can be applied
       - Random
       - Tree-based (send messages from leaves to root and back)
 ** Parameter Estimation
    - Given training data $D = \{x^{(i)},y^{(i)}\}^N_{i=1}$
-     - Finding a set of parameters $\Lambda = \{\lambda_k\}$
-   - Assign weights $\lambda_k$ such that we are accurate on the training data.
+     - Find s set of parameters $\Lambda = \{\lambda_k\}$
+   - Use L-BFGS
 * Experiments
 ** Experiments
 *** Noun-phrase Chunking
@@ -174,6 +169,7 @@
     - CRF+CRF
     - Brill+CRF
       - Brill tagger trained on over four times more data including the CoNLL 2000
+      - More than 40.000 sentences
 ** Results
  #+ATTR_LATEX: :float t :width 8cm :center t
   [[file:figures/npgraph.pdf]]
@@ -185,9 +181,10 @@
   [[file:figures/npinf.pdf]]
 * Conclusions
 ** Conclusions
-   - Factorial CRFs are useful for NP tasks
+   - Jointly perform several labeling tasks at once perform better than the sequential approach
+     - Useful for many NLP tasks
    - Loopy belief propagation:
-     - Performs equally to exact inference
      - Reduces training time
+     - Performs equally to exact inference
 
      

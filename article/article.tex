@@ -1,4 +1,4 @@
-% Created 2016-10-29 Sat 14:00
+% Created 2016-10-31 Mon 09:28
 \documentclass[presentation,bigger]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -25,7 +25,7 @@
  pdftitle={Dynamic Conditional Random Fields},
  pdfkeywords={},
  pdfsubject={},
- pdfcreator={Emacs 25.1.1 (Org mode 8.3.6)}, 
+ pdfcreator={Emacs 24.5.2 (Org mode 8.3.6)}, 
  pdflang={English}}
 \begin{document}
 
@@ -37,11 +37,10 @@
 
 \section{Introduction}
 \label{sec:orgheadline10}
-\begin{frame}[label={sec:orgheadline1}]{Introduction}
+\begin{frame}[label={sec:orgheadline1}]{Motivation}
 \begin{itemize}
 \item Sequential Data
-\item Generative Versus Discriminative
-\item Conditional Random Fields
+\item Discriminative Model
 \end{itemize}
 \end{frame}
 
@@ -103,14 +102,14 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \[ p_\Lambda(y|x) = \dfrac{1}{Z(x)}\prod_{c \in C} \Phi (y_c, x_c) \]
 \begin{itemize}
 \item \(\Phi\) is a potential function
-\item \(Z(x)\) is a normalization factor
+\item \(Z(x)\) is the partition function
 \end{itemize}
 \end{definition}
 \end{frame}
 \begin{frame}[label={sec:orgheadline7}]{Potential function}
 \begin{block}{Feature Functions}
 \begin{itemize}
-\item Potentials factorize according to a set of features functions \(\{f_k\}\):
+\item Potentials factorize according to a set of weights \(\{\lambda_k\}\) and feature functions \(\{f_k\}\):
 \end{itemize}
 \[ f(y_c,x_c) = exp\Bigg(\sum_k \lambda_kf_k(y_c,x_c)\Bigg) \]
 \end{block}
@@ -118,11 +117,11 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \begin{frame}[label={sec:orgheadline8}]{Linear-chain CRF}
 \begin{figure}[htb]
 \centering
-\includegraphics[width=5cm]{/home/martin/article/figures/LCRF.pdf}
+\includegraphics[width=5cm]{figures/LCRF.pdf}
 \end{figure}
 \begin{itemize}
-\item A special case of CRFs where the first-order Markov assumption is made over the latent variables.
-\item Then the feature functions can be described as:
+\item Conditional version of hidden Markov models
+\item Feature functions can be described as:
 \[ f_k(y_{t-1},y_t,x,t) \]
 \end{itemize}
 \end{frame}
@@ -141,17 +140,15 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{block}
 \end{frame}
 \section{Dynamic Conditional Random Fields}
-\label{sec:orgheadline20}
+\label{sec:orgheadline21}
 \begin{frame}[label={sec:orgheadline11}]{Key Contributions}
 \begin{itemize}
 \item Dynamic Conditional Random Fields (DCRF)
 \begin{itemize}
 \item Factorial CRF
-\item Exact inference for some models
-\item Inference approximation:
+\item Exact inference intractable for some models:
 \begin{itemize}
-\item Lower training time
-\item Equal performance
+\item Use an inference approximation algorithm
 \end{itemize}
 \end{itemize}
 \end{itemize}
@@ -162,27 +159,36 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{frame}
 
 \begin{frame}[label={sec:orgheadline12}]{DCRF}
+\begin{definition}[Clique Index]
+\begin{itemize}
+\item Given a time \(t\), denote any variable \(y_{ij}\) in \(y\) by:
+\begin{itemize}
+\item Its index \(j\) in \(y_i\)
+\item Its time offset \(\Delta t = i-t\)
+\end{itemize}
+\item \(c = \{(\Delta t, j)\}\) is a clique index
+\item \(y_{t,c}\) is the set of variables in clique index \(c\) at time \(t\)
+\end{itemize}
+\end{definition}
+\end{frame}
+\begin{frame}[label={sec:orgheadline13}]{DCRF}
 \begin{definition}[Dynamic Conditional Random Field]
 \begin{itemize}
-\item Cliques are defined by its index \(j\) and its time offset \(\Delta t = i-t\)
-\begin{itemize}
-\item I.e. \(y_{12}\) when \(t = 1\) is denoted as \(y_{02}\) since \(\Delta t = 0\)
-\end{itemize}
 \item \(p(y|x) = \dfrac{1}{Z(x)}\displaystyle \prod_{t}\prod_{c \in C} \text{exp}\Bigg(\sum_k \lambda_k f_k(y_{t,c},x,t)\Bigg)\)
 \item where \(Z(x)\) is the partition function
 \end{itemize}
 \end{definition}
 \end{frame}
-\begin{frame}[label={sec:orgheadline13}]{Factorial CRF}
+\begin{frame}[label={sec:orgheadline14}]{Factorial CRF}
 \begin{itemize}
-\item A DCRF which has linear chains of labels, with connection between cotemporal labels.
+\item A DCRF which has linear chains of labels, with edges between cotemporal labels.
 \end{itemize}
 \begin{figure}[htb]
 \centering
 \includegraphics[width=5cm]{figures/FCRF.pdf}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:orgheadline14}]{Factorial CRF}
+\begin{frame}[label={sec:orgheadline15}]{Factorial CRF}
 \begin{block}{Cliques}
 \begin{itemize}
 \item The cliques are of the form:
@@ -193,7 +199,7 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline15}]{Factorial CRF}
+\begin{frame}[label={sec:orgheadline16}]{Factorial CRF}
 \begin{definition}[Factorial CRF]
 \(p(x|y) = \dfrac{1}{Z(x)}\Bigg(\displaystyle\prod_{t=1}^{T-1}\prod_{\ell=1}^{L}\Phi_\ell(y_{\ell,t},y_{\ell,t+1},x,t)\Bigg)\Bigg(\prod_{t=1}^{T}\prod_{\ell=1}^{L-1}\Psi_\ell(y_{\ell,t},y_{\ell+1,t},x,t)\Bigg)\)
 \begin{itemize}
@@ -203,7 +209,7 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{definition}
 \end{frame}
-\begin{frame}[label={sec:orgheadline16}]{Factorial CRF}
+\begin{frame}[label={sec:orgheadline17}]{Factorial CRF}
 \begin{block}{Factors}
 \begin{itemize}
 \item The factors are modeled using features \(\{f_k\}\) and weights \(\{\lambda_k\}\) of \(G\) as:
@@ -212,13 +218,13 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline17}]{Inference}
+\begin{frame}[label={sec:orgheadline18}]{Inference}
 \begin{itemize}
-\item Exact inference can be expensive for many models
-\item Use approximate inference using loopy belief propagation
+\item Exact inference intractable for some models
+\item Approximate inference using loopy belief propagation
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgheadline18}]{Inference}
+\begin{frame}[label={sec:orgheadline19}]{Inference}
 \begin{block}{Loopy Belief Propagation}
 \begin{itemize}
 \item Message from node \(x_u\) to node \(x_v\):
@@ -227,7 +233,7 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \begin{itemize}
 \item The belief of \(x_u\) about the probability \(p(x_j)\)
 \end{itemize}
-\item Iteratively send messages until convergence
+\item Iteratively send messages until convergence or early cutoff
 \item Different schedules can be applied
 \begin{itemize}
 \item Random
@@ -236,18 +242,18 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline19}]{Parameter Estimation}
+\begin{frame}[label={sec:orgheadline20}]{Parameter Estimation}
 \begin{itemize}
 \item Given training data \(D = \{x^{(i)},y^{(i)}\}^N_{i=1}\)
 \begin{itemize}
-\item Finding a set of parameters \(\Lambda = \{\lambda_k\}\)
+\item Find s set of parameters \(\Lambda = \{\lambda_k\}\)
 \end{itemize}
-\item Assign weights \(\lambda_k\) such that we are accurate on the training data.
+\item Use L-BFGS
 \end{itemize}
 \end{frame}
 \section{Experiments}
-\label{sec:orgheadline26}
-\begin{frame}[label={sec:orgheadline21}]{Experiments}
+\label{sec:orgheadline27}
+\begin{frame}[label={sec:orgheadline22}]{Experiments}
 \begin{block}{Noun-phrase Chunking}
 The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furious \alert{[O]} and \alert{[O]} barked \alert{[O]} at \alert{[O]} the \alert{[B-NP]} large \alert{[I-NP]} human \alert{[I-NP]}
 \end{block}
@@ -263,7 +269,7 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline22}]{Experiments}
+\begin{frame}[label={sec:orgheadline23}]{Experiments}
 \begin{block}{Data:}
 \begin{itemize}
 \item CoNLL 2000
@@ -280,37 +286,41 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \item Brill+CRF
 \begin{itemize}
 \item Brill tagger trained on over four times more data including the CoNLL 2000
+\item More than 40.000 sentences
 \end{itemize}
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline23}]{Results}
+\begin{frame}[label={sec:orgheadline24}]{Results}
 \begin{figure}[htb]
 \centering
 \includegraphics[width=8cm]{figures/npgraph.pdf}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:orgheadline24}]{Results}
+\begin{frame}[label={sec:orgheadline25}]{Results}
 \begin{figure}[htb]
 \centering
 \includegraphics[width=7cm]{figures/nptab.pdf}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:orgheadline25}]{Inference Algorithms}
+\begin{frame}[label={sec:orgheadline26}]{Inference Algorithms}
 \begin{figure}[htb]
 \centering
 \includegraphics[width=\textwidth]{figures/npinf.pdf}
 \end{figure}
 \end{frame}
 \section{Conclusions}
-\label{sec:orgheadline28}
-\begin{frame}[label={sec:orgheadline27}]{Conclusions}
+\label{sec:orgheadline29}
+\begin{frame}[label={sec:orgheadline28}]{Conclusions}
 \begin{itemize}
-\item Factorial CRFs are useful for NP tasks
+\item Jointly perform several labeling tasks at once perform better than the sequential approach
+\begin{itemize}
+\item Useful for many NLP tasks
+\end{itemize}
 \item Loopy belief propagation:
 \begin{itemize}
-\item Performs equally to exact inference
 \item Reduces training time
+\item Performs equally to exact inference
 \end{itemize}
 \end{itemize}
 \end{frame}
