@@ -1,6 +1,6 @@
 #+startup: beamer
 #+TITLE:     Dynamic Conditional Random Fields
-#+SUBTITLE: Factorized Probabilistic Models for Labeling and Segmenting Data
+#+SUBTITLE: Factorized Probabilistic Models for Labeling and Segmenting Sequence Data
 #+AUTHOR:    Martin Zimmer Kristensen
 # #+DATE:      2016-30-10
 #+LANGUAGE:  en
@@ -19,13 +19,7 @@
 #+OPTIONS: H:2 TOC:1
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 * Introduction
-** Motivation
-   - Sequential Data
-   - Discriminative Model
-   # #+ATTR_LATEX: :float t :width 5cm :center t
-   # [[/home/martin/article/figures/LCRF.pdf]]
 ** Sequential Data
-# something about error cascading
 *** Part-of-speech Tagging
     The *[DT]* little *[JJ]* dog *[NN]* was *[VBD]* furious *[JJ]* and *[CC]* barked *[VBD]* at *[IN]* the *[DT]* large *[JJ]* human *[NN]*
 *** Noun-phrase Chunking
@@ -34,51 +28,49 @@
 *** Other
     - Named Entity Recognition
     - Speech Recognition
-** Generative Versus Discriminative
-   - Generative models: naive Bayes, hidden Markov model, dynamic Bayesian network
-   - Discriminative models: logistic regression, conditional random field
-** Generative Versus Discriminative
-*** Generative Models:
+** Motivation
+*** Generative Models (HMMs, DBNs):
     - The joint probability $p(x,y)$
-      - Able to generate $x$
-      - Assumptions to achieve tractability:
-        - Naive Bayes assumption
-      - Modeling interdependent features is difficult
-** Generative Versus Discriminative
-*** Discriminative Models:
+      - Generate features
+      - Unnecessary when only segmenting and labeling data
+      - Assumptions among features to achieve tractability
+        - Hurts performance
+** Motivation
+*** Discriminative Models (CRFs, DCRFs):
     - The conditional probability: $p(y|x)$
-      - Assumptions among $y$
-      - Assumptions among $y$ and $x$
-      - Interdependent features
+      - Dependencies among $x$ not explicitly modeled
+      - No assumptions among (interdependent) features
         - Capitalization, prefixes, suffixes, neighboring words...
-      - Unseen words can be labeled by using their features
-# ** Generative Versus Discriminative
-#    #+ATTR_LATEX: :float t :width \textwidth :center t
-#    [[file:figures/discgen.pdf]]
-# ** Conditional Random Fields (CRF)
-#    #+ATTR_LATEX: :float t :width 8cm :center t
-#    [[file:figures/LCRF.pdf]]
-** Conditional Random Fields (CRF)
-*** CRF                                                        :B_definition:
+      - Unseen words can be labeled by using interdependent features
+    # ** Generative Versus Discriminative
+    #    #+ATTR_LATEX: :float t :width \textwidth :center t
+    #    [[file:figures/discgen.pdf]]
+    # ** Conditional Random Fields (CRF)
+    #    #+ATTR_LATEX: :float t :width 8cm :center t
+    #    [[file:figures/LCRF.pdf]]
+** Conditional Random Fields
+*** Conditional Random Fields                                  :B_definition:
     :PROPERTIES:
     :BEAMER_env: definition
     :END:
     - Let $G$ be an undirected model over sets of random variables $y$ and $x$
     - Let $C = \{\{y_c, x_c\}\}$ be the set of cliques in $G$
     - Conditional probability defined as:
-   \[ p_\Lambda(y|x) = \dfrac{1}{Z(x)}\prod_{c \in C} \Phi (y_c, x_c) \]
-   - $\Phi$ is a potential function
-   - $Z(x)$ is the partition function
-** Potential function
+    \[ p_\Lambda(y|x) = \dfrac{1}{Z(x)}\prod_{c \in C} \Phi (y_c, x_c) \]
+    - $\Phi$ is a potential function
+    - $Z(x)$ is the partition function
+** Conditional Random Fields
 *** Feature Functions
-   - Potentials factorize according to a set of weights $\{\lambda_k\}$ and feature functions $\{f_k\}$:
-   \[ f(y_c,x_c) = exp\Bigg(\sum_k \lambda_kf_k(y_c,x_c)\Bigg) \]
+    - Potentials factorize according to a set of weights $\{\lambda_k\}$ and feature functions $\{f_k\}$:
+    \[ \Phi(y_c,x_c) = exp\Bigg(\sum_k \lambda_kf_k(y_c,x_c)\Bigg) \]
 ** Linear-chain CRF
-#+ATTR_LATEX: :float t :width 5cm :center t
-[[file:figures/LCRF.pdf]]
+   #+ATTR_LATEX: :float t :width 5cm :center t
+   [[file:figures/LCRF.pdf]]
+   - Previous applications use linear-chain CRF
+     - Tractable exact inference algorithms
    - Conditional version of hidden Markov models
    - Feature functions can be described as:
-    \[ f_k(y_{t-1},y_t,x,t) \]
+     \[ f_k(y_{t-1},y_t,x,t) \]
 ** Linear-chain CRF
 *** Feature Functions:
     - $f(y_{t-1}, y_t, x, t) = 1$:
@@ -88,16 +80,18 @@
 * Dynamic Conditional Random Fields
 ** Key Contributions
    - Dynamic Conditional Random Fields (DCRF)
+     - Generalization of linear-chain CRFs
+     - Similar to DBNs
      - Factorial CRF
-     - Exact inference intractable for some models:
-       - Use an inference approximation algorithm
+     - Inference approximation algorithm for complex models
    #+attr_latex: :float t :width \textwidth :center t
-  [[file:figures/DCRF.pdf]]
-# ** DCRF
-#    - Let $y = \{y_1 \dots{} y_T\}$ be a sequence of random vectors:
-#      - $y_i = (y_{i1} \ldots{} y_{im})$ where $y_i$ is the state vector at time $i$, and
-#      - $y_{ij}$ is the value of variable $j$ at time $t$
-** DCRF
+   [[file:figures/DCRF.pdf]]
+   # ** DCRF
+   #    - Let $y = \{y_1 \dots{} y_T\}$ be a sequence of random vectors:
+   #      - $y_i = (y_{i1} \ldots{} y_{im})$ where $y_i$ is the state vector at time $i$, and
+   #      - $y_{ij}$ is the value of variable $j$ at time $t$
+** Dynamic Conditional Random Fields
+    - $y_{ij}$ is the variable $j$ at time $i$
 *** Clique Index                                               :B_definition:
     :PROPERTIES:
     :BEAMER_env: definition
@@ -107,23 +101,23 @@
       - Its time offset $\Delta t = i-t$
     - $c = \{(\Delta t, j)\}$ is a clique index
     - $y_{t,c}$ is the set of variables in clique index $c$ at time $t$
-** DCRF
+** Dynamic Conditional Random Fields
 *** Dynamic Conditional Random Field                           :B_definition:
     :PROPERTIES:
     :BEAMER_env: definition
     :END:
     - $p(y|x) = \dfrac{1}{Z(x)}\displaystyle \prod_{t}\prod_{c \in C} \text{exp}\Bigg(\sum_k \lambda_k f_k(y_{t,c},x,t)\Bigg)$
     - where $Z(x)$ is the partition function
-** Factorial CRF
-   - A DCRF which has linear chains of labels, with edges between cotemporal labels.
+** Factorial Conditional Random Field
+   - A DCRF which has linear chains of labels with edges between cotemporal labels.
    #+attr_latex: :float t :width 5cm :center t
    [[file:figures/FCRF.pdf]]
-** Factorial CRF
+** Factorial Conditional Random Field
 *** Cliques
     - The cliques are of the form:
       - Within-chain edges: \text{ }\text{ }$\{(0,\ell),(1,\ell)\}$
       - Between-chain edges: $\{(0,\ell),(0,\ell+1)\}$
-** Factorial CRF
+** Factorial Conditional Random Field
 *** Factorial CRF                                              :B_definition:
     :PROPERTIES:
     :BEAMER_env: definition
@@ -132,11 +126,11 @@
     - $\{\Phi_\ell\}$ are the factors over within-chain edges
     - $\{\Psi_\ell\}$ are the factors over between-chain edges
     - $Z(x)$ is the partition function.
-** Factorial CRF
+** Factorial Conditional Random Field
 *** Factors
-     - The factors are modeled using features $\{f_k\}$ and weights $\{\lambda_k\}$ of $G$ as:
-       \[\Phi_\ell(y_{\ell,t},y_{\ell,t+1},x,t) = \text{exp}\Bigg\{\sum_k\lambda_k f_k(y_{\ell,t},y_{\ell,t+1},x,t)\Bigg\}\text{,}\]
-       \[\Psi_\ell(y_{\ell,t},y_{\ell+1,t},x,t) = \text{exp}\Bigg\{\sum_k\lambda_k f_k(y_{\ell,t},y_{\ell+1,t},x,t)\Bigg\}\text{.}\]
+    - The factors are modeled using features $\{f_k\}$ and weights $\{\lambda_k\}$ of $G$ as:
+      \[\Phi_\ell(y_{\ell,t},y_{\ell,t+1},x,t) = \text{exp}\Bigg\{\sum_k\lambda_k f_k(y_{\ell,t},y_{\ell,t+1},x,t)\Bigg\}\text{,}\]
+      \[\Psi_\ell(y_{\ell,t},y_{\ell+1,t},x,t) = \text{exp}\Bigg\{\sum_k\lambda_k f_k(y_{\ell,t},y_{\ell+1,t},x,t)\Bigg\}\text{.}\]
 ** Inference
    - Exact inference intractable for some models
    - Approximate inference using loopy belief propagation
@@ -145,7 +139,7 @@
     - Message from node $x_u$ to node $x_v$:
       \[ m_{x_u}(x_v) \]
     - Value of $m_{x_u}(x_v)$:
-      - The belief of $x_u$ about the probability $p(x_j)$
+      - The belief of $x_u$ about the probability $p(x_v)$
     - Iteratively send messages until convergence or early cutoff
     - Different schedules can be applied
       - Random
@@ -167,21 +161,21 @@
 *** Data:
     - CoNLL 2000
 *** Approach:
-   - Use a factorial CRF to jointly do POS and chunking
+    - Use a factorial CRF to jointly do POS and chunking
 *** Compare to:
     - CRF+CRF
     - Brill+CRF
       - Brill tagger trained on over four times more data including the CoNLL 2000
       - More than 40.000 sentences
 ** Results
- #+ATTR_LATEX: :float t :width 8cm :center t
-  [[file:figures/npgraph.pdf]]
+   #+ATTR_LATEX: :float t :width 8cm :center t
+   [[file:figures/npgraph.pdf]]
 ** Results
- #+ATTR_LATEX: :float t :width 7cm :center t
-  [[file:figures/nptab.pdf]]
+   #+ATTR_LATEX: :float t :width 7cm :center t
+   [[file:figures/nptab.pdf]]
 ** Inference Algorithms
- #+ATTR_LATEX: :float t :width \textwidth :center t
-  [[file:figures/npinf.pdf]]
+   #+ATTR_LATEX: :float t :width \textwidth :center t
+   [[file:figures/npinf.pdf]]
 * Conclusions
 ** Conclusions
    - Jointly perform several labeling tasks at once perform better than the sequential approach
@@ -189,5 +183,3 @@
    - Loopy belief propagation:
      - Reduces training time
      - Performs equally to exact inference
-
-     

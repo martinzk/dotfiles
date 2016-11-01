@@ -1,4 +1,4 @@
-% Created 2016-10-31 Mon 13:17
+% Created 2016-11-01 Tue 09:39
 \documentclass[presentation,bigger]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -19,7 +19,7 @@
 \author{Martin Zimmer Kristensen}
 \date{\today}
 \title{Dynamic Conditional Random Fields}
-\subtitle{Factorized Probabilistic Models for Labeling and Segmenting Data}
+\subtitle{Factorized Probabilistic Models for Labeling and Segmenting Sequence Data}
 \hypersetup{
  pdfauthor={Martin Zimmer Kristensen},
  pdftitle={Dynamic Conditional Random Fields},
@@ -36,15 +36,8 @@
 \end{frame}
 
 \section{Introduction}
-\label{sec:orgheadline11}
-\begin{frame}[label={sec:orgheadline1}]{Motivation}
-\begin{itemize}
-\item Sequential Data
-\item Discriminative Model
-\end{itemize}
-\end{frame}
-
-\begin{frame}[label={sec:orgheadline2}]{Sequential Data}
+\label{sec:orgheadline9}
+\begin{frame}[label={sec:orgheadline1}]{Sequential Data}
 \begin{block}{Part-of-speech Tagging}
 The \alert{[DT]} little \alert{[JJ]} dog \alert{[NN]} was \alert{[VBD]} furious \alert{[JJ]} and \alert{[CC]} barked \alert{[VBD]} at \alert{[IN]} the \alert{[DT]} large \alert{[JJ]} human \alert{[NN]}
 \end{block}
@@ -52,7 +45,7 @@ The \alert{[DT]} little \alert{[JJ]} dog \alert{[NN]} was \alert{[VBD]} furious 
 The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furious \alert{[O]} and \alert{[O]} barked \alert{[O]} at \alert{[O]} the \alert{[B-NP]} large \alert{[I-NP]} human \alert{[I-NP]}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline3}]{Sequential Data}
+\begin{frame}[label={sec:orgheadline2}]{Sequential Data}
 \begin{block}{Other}
 \begin{itemize}
 \item Named Entity Recognition
@@ -60,46 +53,39 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline4}]{Generative Versus Discriminative}
-\begin{itemize}
-\item Generative models: naive Bayes, hidden Markov model, dynamic Bayesian network
-\item Discriminative models: logistic regression, conditional random field
-\end{itemize}
-\end{frame}
-\begin{frame}[label={sec:orgheadline5}]{Generative Versus Discriminative}
-\begin{block}{Generative Models:}
+\begin{frame}[label={sec:orgheadline3}]{Motivation}
+\begin{block}{Generative Models (HMMs, DBNs):}
 \begin{itemize}
 \item The joint probability \(p(x,y)\)
 \begin{itemize}
-\item Able to generate \(x\)
-\item Assumptions to achieve tractability:
+\item Generate features
+\item Unnecessary when only segmenting and labeling data
+\item Assumptions among features to achieve tractability
 \begin{itemize}
-\item Naive Bayes assumption
+\item Hurts performance
 \end{itemize}
-\item Modeling interdependent features is difficult
 \end{itemize}
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline6}]{Generative Versus Discriminative}
-\begin{block}{Discriminative Models:}
+\begin{frame}[label={sec:orgheadline4}]{Motivation}
+\begin{block}{Discriminative Models (CRFs, DCRFs):}
 \begin{itemize}
 \item The conditional probability: \(p(y|x)\)
 \begin{itemize}
-\item Assumptions among \(y\)
-\item Assumptions among \(y\) and \(x\)
-\item Interdependent features
+\item Dependencies among \(x\) not explicitly modeled
+\item No assumptions among (interdependent) features
 \begin{itemize}
 \item Capitalization, prefixes, suffixes, neighboring words\ldots{}
 \end{itemize}
-\item Unseen words can be labeled by using their features
+\item Unseen words can be labeled by using interdependent features
 \end{itemize}
 \end{itemize}
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orgheadline7}]{Conditional Random Fields (CRF)}
-\begin{definition}[CRF]
+\begin{frame}[label={sec:orgheadline5}]{Conditional Random Fields}
+\begin{definition}[Conditional Random Fields]
 \begin{itemize}
 \item Let \(G\) be an undirected model over sets of random variables \(y\) and \(x\)
 \item Let \(C = \{\{y_c, x_c\}\}\) be the set of cliques in \(G\)
@@ -112,26 +98,30 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{definition}
 \end{frame}
-\begin{frame}[label={sec:orgheadline8}]{Potential function}
+\begin{frame}[label={sec:orgheadline6}]{Conditional Random Fields}
 \begin{block}{Feature Functions}
 \begin{itemize}
 \item Potentials factorize according to a set of weights \(\{\lambda_k\}\) and feature functions \(\{f_k\}\):
 \end{itemize}
-\[ f(y_c,x_c) = exp\Bigg(\sum_k \lambda_kf_k(y_c,x_c)\Bigg) \]
+\[ \Phi(y_c,x_c) = exp\Bigg(\sum_k \lambda_kf_k(y_c,x_c)\Bigg) \]
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline9}]{Linear-chain CRF}
+\begin{frame}[label={sec:orgheadline7}]{Linear-chain CRF}
 \begin{figure}[htb]
 \centering
 \includegraphics[width=5cm]{figures/LCRF.pdf}
 \end{figure}
 \begin{itemize}
+\item Previous applications use linear-chain CRF
+\begin{itemize}
+\item Tractable exact inference algorithms
+\end{itemize}
 \item Conditional version of hidden Markov models
 \item Feature functions can be described as:
 \[ f_k(y_{t-1},y_t,x,t) \]
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgheadline10}]{Linear-chain CRF}
+\begin{frame}[label={sec:orgheadline8}]{Linear-chain CRF}
 \begin{block}{Feature Functions:}
 \begin{itemize}
 \item \(f(y_{t-1}, y_t, x, t) = 1\):
@@ -146,16 +136,15 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{block}
 \end{frame}
 \section{Dynamic Conditional Random Fields}
-\label{sec:orgheadline22}
-\begin{frame}[label={sec:orgheadline12}]{Key Contributions}
+\label{sec:orgheadline20}
+\begin{frame}[label={sec:orgheadline10}]{Key Contributions}
 \begin{itemize}
 \item Dynamic Conditional Random Fields (DCRF)
 \begin{itemize}
+\item Generalization of linear-chain CRFs
+\item Similar to DBNs
 \item Factorial CRF
-\item Exact inference intractable for some models:
-\begin{itemize}
-\item Use an inference approximation algorithm
-\end{itemize}
+\item Inference approximation algorithm for complex models
 \end{itemize}
 \end{itemize}
 \begin{figure}[htb]
@@ -164,7 +153,10 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{figure}
 \end{frame}
 
-\begin{frame}[label={sec:orgheadline13}]{DCRF}
+\begin{frame}[label={sec:orgheadline11}]{Dynamic Conditional Random Fields}
+\begin{itemize}
+\item \(y_{ij}\) is the variable \(j\) at time \(i\)
+\end{itemize}
 \begin{definition}[Clique Index]
 \begin{itemize}
 \item Given a time \(t\), denote any variable \(y_{ij}\) in \(y\) by:
@@ -177,7 +169,7 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{definition}
 \end{frame}
-\begin{frame}[label={sec:orgheadline14}]{DCRF}
+\begin{frame}[label={sec:orgheadline12}]{Dynamic Conditional Random Fields}
 \begin{definition}[Dynamic Conditional Random Field]
 \begin{itemize}
 \item \(p(y|x) = \dfrac{1}{Z(x)}\displaystyle \prod_{t}\prod_{c \in C} \text{exp}\Bigg(\sum_k \lambda_k f_k(y_{t,c},x,t)\Bigg)\)
@@ -185,16 +177,16 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{definition}
 \end{frame}
-\begin{frame}[label={sec:orgheadline15}]{Factorial CRF}
+\begin{frame}[label={sec:orgheadline13}]{Factorial Conditional Random Field}
 \begin{itemize}
-\item A DCRF which has linear chains of labels, with edges between cotemporal labels.
+\item A DCRF which has linear chains of labels with edges between cotemporal labels.
 \end{itemize}
 \begin{figure}[htb]
 \centering
 \includegraphics[width=5cm]{figures/FCRF.pdf}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:orgheadline16}]{Factorial CRF}
+\begin{frame}[label={sec:orgheadline14}]{Factorial Conditional Random Field}
 \begin{block}{Cliques}
 \begin{itemize}
 \item The cliques are of the form:
@@ -205,7 +197,7 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline17}]{Factorial CRF}
+\begin{frame}[label={sec:orgheadline15}]{Factorial Conditional Random Field}
 \begin{definition}[Factorial CRF]
 \(p(x|y) = \dfrac{1}{Z(x)}\Bigg(\displaystyle\prod_{t=1}^{T-1}\prod_{\ell=1}^{L}\Phi_\ell(y_{\ell,t},y_{\ell,t+1},x,t)\Bigg)\Bigg(\prod_{t=1}^{T}\prod_{\ell=1}^{L-1}\Psi_\ell(y_{\ell,t},y_{\ell+1,t},x,t)\Bigg)\)
 \begin{itemize}
@@ -215,7 +207,7 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{definition}
 \end{frame}
-\begin{frame}[label={sec:orgheadline18}]{Factorial CRF}
+\begin{frame}[label={sec:orgheadline16}]{Factorial Conditional Random Field}
 \begin{block}{Factors}
 \begin{itemize}
 \item The factors are modeled using features \(\{f_k\}\) and weights \(\{\lambda_k\}\) of \(G\) as:
@@ -224,20 +216,20 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline19}]{Inference}
+\begin{frame}[label={sec:orgheadline17}]{Inference}
 \begin{itemize}
 \item Exact inference intractable for some models
 \item Approximate inference using loopy belief propagation
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgheadline20}]{Inference}
+\begin{frame}[label={sec:orgheadline18}]{Inference}
 \begin{block}{Loopy Belief Propagation}
 \begin{itemize}
 \item Message from node \(x_u\) to node \(x_v\):
 \[ m_{x_u}(x_v) \]
 \item Value of \(m_{x_u}(x_v)\):
 \begin{itemize}
-\item The belief of \(x_u\) about the probability \(p(x_j)\)
+\item The belief of \(x_u\) about the probability \(p(x_v)\)
 \end{itemize}
 \item Iteratively send messages until convergence or early cutoff
 \item Different schedules can be applied
@@ -248,7 +240,7 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline21}]{Parameter Estimation}
+\begin{frame}[label={sec:orgheadline19}]{Parameter Estimation}
 \begin{itemize}
 \item Given training data \(D = \{x^{(i)},y^{(i)}\}^N_{i=1}\)
 \begin{itemize}
@@ -258,8 +250,8 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{frame}
 \section{Experiments}
-\label{sec:orgheadline28}
-\begin{frame}[label={sec:orgheadline23}]{Experiments}
+\label{sec:orgheadline26}
+\begin{frame}[label={sec:orgheadline21}]{Experiments}
 \begin{block}{Noun-phrase Chunking}
 The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furious \alert{[O]} and \alert{[O]} barked \alert{[O]} at \alert{[O]} the \alert{[B-NP]} large \alert{[I-NP]} human \alert{[I-NP]}
 \end{block}
@@ -275,7 +267,7 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline24}]{Experiments}
+\begin{frame}[label={sec:orgheadline22}]{Experiments}
 \begin{block}{Data:}
 \begin{itemize}
 \item CoNLL 2000
@@ -297,27 +289,27 @@ The \alert{[B-NP]} little \alert{[I-NP]} dog \alert{[I-NP]} was \alert{[O]} furi
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgheadline25}]{Results}
+\begin{frame}[label={sec:orgheadline23}]{Results}
 \begin{figure}[htb]
 \centering
 \includegraphics[width=8cm]{figures/npgraph.pdf}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:orgheadline26}]{Results}
+\begin{frame}[label={sec:orgheadline24}]{Results}
 \begin{figure}[htb]
 \centering
 \includegraphics[width=7cm]{figures/nptab.pdf}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:orgheadline27}]{Inference Algorithms}
+\begin{frame}[label={sec:orgheadline25}]{Inference Algorithms}
 \begin{figure}[htb]
 \centering
 \includegraphics[width=\textwidth]{figures/npinf.pdf}
 \end{figure}
 \end{frame}
 \section{Conclusions}
-\label{sec:orgheadline30}
-\begin{frame}[label={sec:orgheadline29}]{Conclusions}
+\label{sec:orgheadline28}
+\begin{frame}[label={sec:orgheadline27}]{Conclusions}
 \begin{itemize}
 \item Jointly perform several labeling tasks at once perform better than the sequential approach
 \begin{itemize}

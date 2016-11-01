@@ -32,9 +32,9 @@
     "capt-of"
     "hyperref")
    (LaTeX-add-labels
-    "sec:orgheadline11"
-    "sec:orgheadline22"
-    "sec:orgheadline28"
-    "sec:orgheadline30"))
+    "sec:orgheadline9"
+    "sec:orgheadline20"
+    "sec:orgheadline26"
+    "sec:orgheadline28"))
  :latex)
 
