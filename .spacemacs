@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -44,8 +45,11 @@ values."
       )
      bibtex
      better-defaults
+     (common-tweaks :variables
+                    ct-helm-no-dots t
+                    ct-persistent-undo t)
      emacs-lisp
-     (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
+     ;; (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      fasd
      git
      github
@@ -56,6 +60,7 @@ values."
       :variables
       latex-enable-auto-fill 'nil)
      markdown
+     nixos
      org
      python
      (ranger :variables ranger-override-dired t)
@@ -63,6 +68,7 @@ values."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
+            shell-default-shell 'ansi-term
             shell-enable-smart-eshell t)
      shell-scripts
      spell-checking
@@ -70,6 +76,7 @@ values."
      systemd
      typography
      (version-control :variables version-control-diff-tool 'diff-hl)
+     writeroom
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -323,15 +330,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   require-final-newline t
   indent-tabs-mode nil
   read-quoted-char-radix 16
-
-  ;; Backups
-  backup-directory-alist `((".*" . ,temporary-file-directory))
-  auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
-  backup-by-copying t
-  delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  make-backup-files nil
   )
 
 (defun dotspacemacs/user-config ()
@@ -343,6 +341,8 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   tab-width 2
   (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "google-chrome-stable")
   (add-hook 'LaTeX-mode-hook 'spacemacs/toggle-tildify-space-on)
   )
 
@@ -355,7 +355,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (mmm-mode markdown-toc markdown-mode gh-md yapfify typo systemd stickyfunc-enhance srefactor ranger pyvenv pytest pyenv-mode py-isort pip-requirements org-ref key-chord ivy magit-gh-pulls live-py-mode insert-shebang ibuffer-projectile hy-mode helm-pydoc helm-gtags helm-bibtex parsebib github-search github-clone github-browse-file gist gh marshal logito pcache ht ggtags fish-mode fasd grizzl evil-snipe cython-mode company-shell company-auctex company-anaconda biblio biblio-core auctex-latexmk auctex anaconda-mode pythonic xterm-color smeargle shell-pop orgit org-projectile org-present org org-pomodoro alert log4e gntp org-download mwim multi-term magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose window-purpose imenu-list helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme))))
+    (xterm-color web-mode orgit org org-ref org-projectile helm-ag evil-mc smartparens highlight flycheck git-gutter helm helm-core projectile magit dash yapfify ws-butler writeroom-mode window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package typo toc-org tagedit systemd stickyfunc-enhance srefactor spacemacs-theme spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs ranger rainbow-delimiters quelpa pyvenv pytest pyenv-mode py-isort pug-mode popwin pkg-info pip-requirements persp-mode pcre2el paradox org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file nix-mode neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum live-py-mode linum-relative link-hint less-css-mode key-chord ivy insert-shebang info+ indent-guide ido-vertical-mode ibuffer-projectile hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-nixos-options helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-bibtex google-translate golden-ratio gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md ggtags flyspell-correct-helm flycheck-pos-tip flx-ido fish-mode fill-column-indicator fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diff-hl define-word cython-mode company-web company-statistics company-shell company-nixos-options company-auctex company-anaconda column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

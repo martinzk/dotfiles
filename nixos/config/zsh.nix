@@ -1,3 +1,8 @@
+{ pkgs, writeText, xdg_utils, zsh-prezto, ... }:
+
+let
+  self = pkgs.writeText "zsh-config"
+    ''
 #
 # Sets Prezto options.
 #
@@ -10,7 +15,7 @@
 #
 
 # Set case-sensitivity for completion, history lookup, etc.
-# zstyle ':prezto:*:*' case-sensitive 'yes'
+zstyle ':prezto:*:*' case-sensitive 'no'
 
 # Color output (auto set to 'no' on dumb terminals).
 zstyle ':prezto:*:*' color 'yes'
@@ -24,19 +29,26 @@ zstyle ':prezto:*:*' color 'yes'
 # Set the Prezto modules to load (browse modules).
 # The order matters.
 zstyle ':prezto:load' pmodule \
-  'environment' \
-  'terminal' \
-  'editor' \
-  'git' \
-  'history' \
-  'directory' \
-  'spectrum' \
-  'utility' \
-  'completion' \
-  'fasd' \
-  'syntax-highlighting' \
-  'history-substring-search' \
-  'prompt'
+       'environment' \
+       'terminal' \
+       'editor' \
+       'history' \
+       'directory' \
+       'spectrum' \
+       'utility' \
+       'completion' \
+       'fasd' \
+       'git' \
+       'prompt' \
+       'syntax-highlighting' \
+       'history-substring-search' \
+       'autosuggestions'
+#
+# Autosuggestions
+#
+
+# Set the query found color.
+zstyle ':prezto:module:autosuggestions:color' found 'fg=5'
 
 #
 # Editor
@@ -46,14 +58,14 @@ zstyle ':prezto:load' pmodule \
 zstyle ':prezto:module:editor' key-bindings 'vi'
 
 # Auto convert .... to ../..
-# zstyle ':prezto:module:editor' dot-expansion 'yes'
+zstyle ':prezto:module:editor' dot-expansion 'yes'
 
 #
 # Git
 #
 
 # Ignore submodules when they are 'dirty', 'untracked', 'all', or 'none'.
-# zstyle ':prezto:module:git:status:ignore' submodules 'all'
+zstyle ':prezto:module:git:status:ignore' submodules 'all'
 
 #
 # GNU Utility
@@ -67,13 +79,13 @@ zstyle ':prezto:module:editor' key-bindings 'vi'
 #
 
 # Set the query found color.
-# zstyle ':prezto:module:history-substring-search:color' found ''
+zstyle ':prezto:module:history-substring-search:color' found 'bg=magenta,fg=white,bold'
 
 # Set the query not found color.
-# zstyle ':prezto:module:history-substring-search:color' not-found ''
+zstyle ':prezto:module:history-substring-search:color' not-found 'bg=red,fg=white,bold'
 
 # Set the search globbing flags.
-# zstyle ':prezto:module:history-substring-search' globbing-flags ''
+zstyle ':prezto:module:history-substring-search' globbing-flags 'i'
 
 #
 # Pacman
@@ -120,10 +132,12 @@ zstyle ':prezto:module:prompt' theme 'damoekri'
 #
 
 # Set syntax highlighters.
+# By default, only the main highlighter is enabled.
 zstyle ':prezto:module:syntax-highlighting' highlighters \
   'main' \
   'brackets' \
   'pattern' \
+  'line' \
   'cursor' \
   'root'
 #
@@ -159,9 +173,26 @@ zstyle ':prezto:module:syntax-highlighting' highlighters \
 # Integrate with iTerm2.
 # zstyle ':prezto:module:tmux:iterm' integrate 'yes'
 
-#
-# Completion
-#
-
-# Have editor tab completion ignore binary/media files.
-zstyle ':prezto:module:completion' editor-ignores 'yes'
+    '';
+in {
+  environment.etc =
+    [ { source = "${pkgs.zsh-prezto}/runcoms/zlogin";
+        target = "zlogin";
+      }
+      { source = "${pkgs.zsh-prezto}/runcoms/zlogout";
+        target = "zlogout";
+      }
+      { source = self;
+        target = "zpreztorc";
+      }
+      { source = "${pkgs.zsh-prezto}/runcoms/zprofile";
+        target = "zprofile.local";
+      }
+      { source = "${pkgs.zsh-prezto}/runcoms/zshenv";
+        target = "zshenv.local";
+      }
+      { source = "${pkgs.zsh-prezto}/runcoms/zshrc";
+        target = "zshrc.local";
+      }
+    ];
+}
