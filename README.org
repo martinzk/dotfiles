@@ -2,4 +2,4 @@
 ** Spacemacs
    - =private= :: symlink subfolders to =.emacs.d/private/=.
    - =.spacemacs= :: symlink to =/home/<user>/=.
-   - =.cache/abbrev_defs= symlink to =.emacs.d/cache/=.
+   - =.cache/abbrev_defs= :: symlink to =.emacs.d/cache/=.
