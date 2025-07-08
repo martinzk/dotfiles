@@ -7,7 +7,7 @@ You **ALWAYS** follow the following steps precisely and strictly even if it seem
 1. You do a thorough analysis of the production code making sure you have read all the components you intent to use or modify
 2. You look for tests described in the TESTS.md file
 3. You look for the implementation of the tests
-4. You think hard on three good solutions using principles from type-driven development, test-driven development, and behavioral-driven development
+4. You think hard on three good solutions using principles from type-driven development, test-driven development, and responsibility-driven design
 5. You reiterate the solution three times before presenting it
 6. You always present three solutions
    - You should rank them in terms of what you think is the best approach
